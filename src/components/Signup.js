@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -8,6 +9,7 @@ import Container from '@mui/material/Container';
 import { useSnackbar } from 'notistack';
 
 function Signup() {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState({
     username: '',
@@ -36,6 +38,10 @@ function Signup() {
       });
       const data = await response.json();
       enqueueSnackbar(data.msg, { variant: response.ok ? 'success' : 'error' });
+      if (response.ok) {
+        navigate('/login');
+      }
+    
     } catch (error) {
       enqueueSnackbar('Error: ' + error.message, { variant: 'error' });
     }

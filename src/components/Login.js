@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import Container from '@mui/material/Container';
 
-const Login = () => {
+const Login = ({setUser}) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -34,7 +34,12 @@ const Login = () => {
         body: JSON.stringify(loginUser)
       });
       console.log(response)
-    } catch (err) {
+      if (response.ok) {
+        const data = await response.json();
+        setUser({ ...data.user, token: data.token });
+        navigate('/');
+      }
+          } catch (err) {
       console.error(err);
     }
   };
