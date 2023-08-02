@@ -23,18 +23,13 @@ function Signup() {
 
   const onSubmit = async e => {
     e.preventDefault();
-    const newUser = {
-      username,
-      email,
-      password
-    };
     try {
       const response = await fetch('http://localhost:4000/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newUser)
+        body: JSON.stringify(formData)
       });
       const data = await response.json();
       enqueueSnackbar(data.msg, { variant: response.ok ? 'success' : 'error' });

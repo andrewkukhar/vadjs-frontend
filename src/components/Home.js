@@ -1,21 +1,26 @@
 import React from 'react';
-import { Box } from '@mui/system';
+import { Link, Route, Routes } from 'react-router-dom';
+import { Box, List, ListItem, ListItemText } from '@mui/material';
+import AppPages from './AppPages';
 
 function Home() {
   return (
     <Box display="flex">
       <Box width="calc(20% + 2vmin)" height="100vw" bgcolor="lightgrey" p={2}>
-        <h2>Sidebar</h2>
-        <ul>
-          <li>Link 1</li>
-          <li>Link 2</li>
-          <li>Link 3</li>
-          <li>Link 4</li>
-        </ul>
+        <List>
+          {AppPages.map(({ path: pagePath, name }) => (
+            <ListItem button key={pagePath} component={Link} to={pagePath}>
+              <ListItemText primary={name} />
+            </ListItem>
+          ))}
+        </List>
       </Box>
       <Box width="calc(80% + 2vmin)" height="100vw" bgcolor="lightblue" p={2}>
-        <h1>Welcome to our site!</h1>
-        <p>This is some public info available to all visitors.</p>
+        <Routes>
+          {AppPages.map(({ path: pagePath, Component }) => (
+            <Route key={pagePath} path={pagePath} element={<Component />} />
+          ))}
+        </Routes>
       </Box>
     </Box>
   );

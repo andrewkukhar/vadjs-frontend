@@ -4,17 +4,16 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import AppPages from './AppPages';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
   return (
     <Router>
-      <Navbar user={user} setUser={setUser} />
+      <Navbar token={token} setToken={setToken} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup setUser={setUser} />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/signup" element={<Signup setToken={setToken} />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>
