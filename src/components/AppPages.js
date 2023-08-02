@@ -1,7 +1,6 @@
 const AppPages = [
   { path: 'page1', name: 'Page 1', Component: Page1 },
   { path: 'page2', name: 'Page 2', Component: Page2 },
-  // add more pages as needed
 ];
 
 export default AppPages;
@@ -10,9 +9,8 @@ export default AppPages;
 function Page1() {
   return <h2>Page 1 Content</h2>;
 }
-
 function Page2() {
   return <h2>Page 2 Content</h2>;
 }
 
-export { Page1, Page2 };
+export { Page1, Page2, };

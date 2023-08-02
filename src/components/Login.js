@@ -34,7 +34,7 @@ const Login = ({setToken}) => {
         const data = await response.json();
         localStorage.setItem('token', data.token);
         setToken(data.token);
-        navigate('/');
+        navigate('*');
       } else {
         console.error('Login failed');
       }

@@ -32,9 +32,9 @@ function Navbar({ token, setToken }) {
     if (route === 'logout') {
       setToken(null);
       localStorage.removeItem('token');
-      navigate('/');
+      navigate('*');
     } else {
-      navigate('/');
+      navigate('*');
     }
     setAnchorEl(null);
   };
