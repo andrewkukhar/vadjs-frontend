@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../auth/AuthContext';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -7,8 +8,9 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import Container from '@mui/material/Container';
 
-const Login = ({setToken}) => {
+const Login = () => {
   const navigate = useNavigate();
+  const { handleLogin } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -22,7 +24,7 @@ const Login = ({setToken}) => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/users/login', {
+      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,8 +34,7 @@ const Login = ({setToken}) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        setToken(data.token);
+        handleLogin(data.token);
         navigate('*');
       } else {
         console.error('Login failed');

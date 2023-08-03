@@ -24,7 +24,7 @@ function Signup() {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/users/signup', {
+      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

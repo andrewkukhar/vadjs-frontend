@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 
 function App() {
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
   return (
     <Router>
-      <Navbar token={token} setToken={setToken} />
+      <Navbar />
       <Routes>
-        <Route path="*" element={<Home setToken={setToken} />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );

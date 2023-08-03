@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../auth/AuthContext';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -16,8 +17,9 @@ import Stack from '@mui/material/Stack';
 import { AccountCircle } from '@mui/icons-material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-function Navbar({ token, setToken }) {
+function Navbar() {
   const navigate = useNavigate();
+  const { token, handleLogout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -30,8 +32,7 @@ function Navbar({ token, setToken }) {
 
   const handleRouteChange = (route) => {
     if (route === 'logout') {
-      setToken(null);
-      localStorage.removeItem('token');
+      handleLogout();
       navigate('*');
     } else {
       navigate('*');
@@ -40,7 +41,7 @@ function Navbar({ token, setToken }) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: '#123456' }}>
       <Toolbar>
         <Box
           sx={{
@@ -49,19 +50,26 @@ function Navbar({ token, setToken }) {
             alignItems: 'center',
             justifyContent: 'space-between',
             boxSizing: 'border-box',
-            px: '4',
+            p: 'calc(5px + 1vmin)',
           }}
         >
-          <Box display="flex" gap={2}>
+          <Box display="flex" gap={2} alignItems="center" justifyContent="center">
             <Stack direction="row" spacing={4}>
               <Avatar
                 alt="VanDJs"
-                src="../../public/logo.png"
-                sx={{ width: 36, height: 36 }}
+                src="/logo.png"
+                sx={{ width: 'calc(15px + 5vmin)', height: 'calc(15px + 5vmin)' }}
               />
             </Stack>
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  fontSize: 'calc(10px + 2vmin)',
+                  px: 'calc(5px + 2vmin)'
+                }}>
                 Hey Van DJs
               </Typography>
             </Link>

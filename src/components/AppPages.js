@@ -1,6 +1,9 @@
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 const AppPages = [
-  { path: 'page1', name: 'Page 1', Component: Page1 },
-  { path: 'page2', name: 'Page 2', Component: Page2 },
+  { path: 'page1', name: 'Page 1', Component: Page1, Icon: HomeIcon },
+  { path: 'page2', name: 'Page 2', Component: Page2, Icon: SettingsIcon },
 ];
 
 export default AppPages;
