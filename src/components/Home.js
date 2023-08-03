@@ -4,7 +4,7 @@ import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconBu
 import { useTheme } from '@mui/material/styles';
 import Signup from './Signup';
 import Login from './Login';
-import DJProfile from './DJProfile';
+import DJProfile from './DJprofile';
 import AppPages from './AppPages';
 
 function Home() {
@@ -34,21 +34,37 @@ function Home() {
       ))}
     </Grid>
   );
-  
+
   return (
-    <Box display="flex">
-      <Box width="calc(15% + 2vmin)" height="100vh" bgcolor="darkgrey" p={2}>
-        {matches ? renderIconGrid() : renderList()}
-      </Box>
-      <Box width="calc(90% + 2vmin)" height="100vh" bgcolor="white" p={2}>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          {AppPages.map(({ path: pagePath, Component }) => (
-            <Route key={pagePath} path={pagePath} element={<Component />} />
-          ))}
-          <Route path="/dj/:id" element={<DJProfile />} />
-        </Routes>
+    <Box display="flex" flexDirection="column" height="100vh" overflow="hidden">
+      <Box display="flex" flex="1" overflow="auto">
+        <Box 
+          width="calc(15% + 2vmin)" 
+          // height="100vh" 
+          bgcolor="darkgrey" 
+          p={2} 
+          position="sticky" 
+          top={0}
+          overflow="auto"
+        >
+          {matches ? renderIconGrid() : renderList()}
+        </Box>
+        <Box 
+          width="calc(85% - 2vmin)" 
+          bgcolor="white" 
+          p={2}
+          pb="calc(10px + 20vmin)"
+          overflow="auto"
+        >
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            {AppPages.map(({ path: pagePath, Component }) => (
+              <Route key={pagePath} path={pagePath} element={<Component />} />
+            ))}
+            <Route path="/:id" element={<DJProfile />} />
+          </Routes>
+        </Box>
       </Box>
     </Box>
   );

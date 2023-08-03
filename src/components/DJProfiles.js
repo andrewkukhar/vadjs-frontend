@@ -1,10 +1,9 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-import DJProfile from './DJProfile';
+import DJProfile from './DJprofile.js';
 
 function DJProfiles() {
-  // This is just an example. Replace with data from your API or state
   const DJs = [
     { 
         id: 1, 
@@ -72,7 +71,7 @@ function DJProfiles() {
           console.log("Mapping DJ:", dj); // Add debug log here
           return (
             <Grid item xs={12} sm={6} md={4} key={dj.id}>
-              <Link to={`/dj/${dj.id}`} style={{ textDecoration: 'none' }}>
+              <Link to={`/${dj.id}`} style={{ textDecoration: 'none' }}>
                 <DJProfile dj={dj} />
               </Link>
             </Grid>

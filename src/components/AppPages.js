@@ -1,5 +1,5 @@
 import { allDJsIcon, HomePageIcon, GigsPageIcon } from './CustomIcons';
-import DJProfiles from './DJProfiles';
+import DJProfiles from './DJprofiles';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import InfoIcon from '@mui/icons-material/Info';
 
