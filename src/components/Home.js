@@ -4,6 +4,7 @@ import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconBu
 import { useTheme } from '@mui/material/styles';
 import Signup from './Signup';
 import Login from './Login';
+import DJProfile from './DJProfile';
 import AppPages from './AppPages';
 
 function Home() {
@@ -46,6 +47,7 @@ function Home() {
           {AppPages.map(({ path: pagePath, Component }) => (
             <Route key={pagePath} path={pagePath} element={<Component />} />
           ))}
+          <Route path="/dj/:id" element={<DJProfile />} />
         </Routes>
       </Box>
     </Box>

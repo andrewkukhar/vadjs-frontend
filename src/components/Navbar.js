@@ -77,13 +77,19 @@ function Navbar() {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {!!token ? (
               <>
-                <Tooltip title="Account settings">
+                <Tooltip title="DJs settings">
                   <IconButton
                     onClick={handleClick}
                     size="small"
                     sx={{ p: 0, color: 'grey.500' }}
                   >
-                    <AccountCircle fontSize="large" cursor="pointer" />
+                    <Stack direction="row" spacing={4}>
+                      <Avatar
+                        alt="DJ"
+                        src="/icons/djicon-w.png"
+                        sx={{ width: 'calc(25px + 5vmin)', height: 'calc(25px + 5vmin)' }}
+                      />
+                    </Stack>
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -101,9 +107,15 @@ function Navbar() {
                 >
                   <MenuItem onClick={() => handleRouteChange('dj')}>
                     <ListItemIcon>
-                      <AccountCircle />
+                      <Stack direction="row" spacing={5}>
+                        <Avatar
+                          alt="DJ"
+                          src="/icons/djprofile.png"
+                          sx={{ width: 'calc(20px + 1vmin)', height: 'calc(20px + 1vmin)' }}
+                        />
+                      </Stack>
                     </ListItemIcon>
-                    Account
+                    DJ profile
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={() => handleRouteChange('logout')}>
