@@ -1,15 +1,20 @@
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { useParams, Link, Route, Routes } from 'react-router-dom';
 import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Signup from './Signup';
-import Login from './Login';
-import DJProfile from './DJprofile';
+import DJProfileDetails from './DJProfileDetails';
 import AppPages from './AppPages';
+import DJs from '../data/djData';
 
 function Home() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const DJProfileComponent = () => {
+    const { id } = useParams();
+    const dj = DJs.find((dj) => dj.id === parseInt(id));
+    return <DJProfileDetails dj={dj}/>;
+  };
 
   const renderList = () => (
     <List>
@@ -40,11 +45,11 @@ function Home() {
       <Box display="flex" flex="1" overflow="auto">
         <Box 
           width="calc(15% + 2vmin)" 
-          // height="100vh" 
           bgcolor="darkgrey" 
           p={2} 
           position="sticky" 
           top={0}
+          pt="calc(30px + 5vmin)"
           overflow="auto"
         >
           {matches ? renderIconGrid() : renderList()}
@@ -53,16 +58,15 @@ function Home() {
           width="calc(85% - 2vmin)" 
           bgcolor="white" 
           p={2}
-          pb="calc(10px + 20vmin)"
+          pt="calc(25px + 5vmin)"
+          pb="calc(150px + 15vmin)"
           overflow="auto"
         >
           <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
             {AppPages.map(({ path: pagePath, Component }) => (
               <Route key={pagePath} path={pagePath} element={<Component />} />
             ))}
-            <Route path="/:id" element={<DJProfile />} />
+            <Route path="/dj/:id" element={<DJProfileComponent />} />
           </Routes>
         </Box>
       </Box>

@@ -2,8 +2,6 @@ import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 
 function DJProfile({ dj }) {
-  console.log('Received DJ:', dj); // Debug log
-
   if (!dj) return null;
 
   return (
@@ -17,7 +15,7 @@ function DJProfile({ dj }) {
       <Avatar 
         alt={dj.name} 
         src={dj.image} 
-        sx={{ width: 128, height: 128, p: 3, m: 4 }} 
+        sx={{ width: 128, height: 128, p: 3, m: 3 }} 
       />
       <Typography variant="h4" component="h1" gutterBottom>
         {dj.name}

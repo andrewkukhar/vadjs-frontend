@@ -14,7 +14,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { AccountCircle } from '@mui/icons-material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 function Navbar() {
@@ -61,7 +60,7 @@ function Navbar() {
                 sx={{ width: 'calc(15px + 5vmin)', height: 'calc(15px + 5vmin)' }}
               />
             </Stack>
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Typography
                 variant="h6"
                 component="div"
