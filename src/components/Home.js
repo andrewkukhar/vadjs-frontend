@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import DJProfileDetails from './DJProfileDetails';
 import AppPages from './AppPages';
 import DJs from '../data/djData';
+import Signup from './Signup';
+import Login from './Login';
 
 function Home() {
   const theme = useTheme();
@@ -63,6 +65,8 @@ function Home() {
           overflow="auto"
         >
           <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             {AppPages.map(({ path: pagePath, Component }) => (
               <Route key={pagePath} path={pagePath} element={<Component />} />
             ))}
