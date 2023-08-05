@@ -56,11 +56,14 @@ const Login = () => {
               required
               fullWidth
               id="email"
+              type="email"
               label="Email Address"
               name="email"
               autoComplete="email"
               value={email}
               onChange={e => onChange(e)}
+              error={!email}
+              helperText={!email && "Valid email is required"}
             />
           </Grid>
           <Grid item xs={12}>
@@ -74,6 +77,9 @@ const Login = () => {
               autoComplete="current-password"
               value={password}
               onChange={e => onChange(e)}
+              inputProps={{ minLength: 6 }}
+              error={password && password.length < 6}
+              helperText={password && password.length < 6 && "Password should be at least 6 characters"}
             />
           </Grid>
         </Grid>

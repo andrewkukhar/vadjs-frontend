@@ -6,6 +6,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import Container from '@mui/material/Container';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 import { useSnackbar } from 'notistack';
 
 function Signup() {
@@ -14,9 +17,10 @@ function Signup() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    role: ''
   });
-  const { username, email, password } = formData;
+  const { username, email, password, role } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,7 +53,7 @@ function Signup() {
       </Box>
       <Box component="form" onSubmit={e => onSubmit(e)}>
         <Grid container spacing={2}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
             <TextField
               required
               fullWidth
@@ -59,18 +63,41 @@ function Signup() {
               autoComplete="text"
               value={username}
               onChange={e => onChange(e)}
+              inputProps={{ minLength: 3 }}
+              error={username && username.length < 3}
+              helperText={username && username.length < 3 && "Username is required and should be at least 3 characters"}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+                required
+                fullWidth
+                labelId="role-label"
+                id="role"
+                name="role"
+                value={role}
+                onChange={e => onChange(e)}
+                label="Role"
+            >
+                <MenuItem value={'DJ'}>DJ</MenuItem>
+                <MenuItem value={'Promoter'}>Promoter</MenuItem>
+                <MenuItem value={'Listener'}>Listener</MenuItem>
+            </Select>
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
               fullWidth
               id="email"
+              type="email"
               label="Email Address"
               name="email"
               autoComplete="email"
               value={email}
               onChange={e => onChange(e)}
+              error={!email}
+              helperText={!email && "Valid email is required"}
             />
           </Grid>
           <Grid item xs={12}>
@@ -84,6 +111,9 @@ function Signup() {
               autoComplete="current-password"
               value={password}
               onChange={e => onChange(e)}
+              inputProps={{ minLength: 6 }}
+              error={password && password.length < 6}
+              helperText={password && password.length < 6 && "Password should be at least 6 characters"}
             />
           </Grid>
         </Grid>
