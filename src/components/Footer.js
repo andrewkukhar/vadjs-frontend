@@ -6,5 +6,5 @@ export default function Footer() {
     <Box bgcolor="darkgrey" color="white" textAlign="center" py={2} position="sticky" bottom={0}>
       All rights reserved @ VanDJs Club
     </Box>
-  )
+  );
 }

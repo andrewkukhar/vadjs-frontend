@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../auth/AuthContext';
 import AppBar from '@mui/material/AppBar';
@@ -15,13 +15,16 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useSnackbar } from 'notistack';
 
 function Navbar() {
   const navigate = useNavigate();
   const { token, handleLogout } = useContext(AuthContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
+  const open = Boolean(anchorEl);  
+  const [hasShownSnackbar, setHasShownSnackbar] = useState(false);
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -32,12 +35,23 @@ function Navbar() {
   const handleRouteChange = (route) => {
     if (route === 'logout') {
       handleLogout();
-      navigate('*');
+      navigate('/home');
     } else {
-      navigate('*');
+      navigate('/home');
     }
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (token && !hasShownSnackbar) {
+        enqueueSnackbar('User logged in', { variant: 'success' });
+        setHasShownSnackbar(true);
+    }
+    // Reset the state when user logs out (when the token is nullified)
+    if (!token) {
+        setHasShownSnackbar(false);
+    }
+  }, [token, enqueueSnackbar, hasShownSnackbar]);
 
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#123456' }}>

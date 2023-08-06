@@ -10,9 +10,11 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { useSnackbar } from 'notistack';
+import { CircularProgress } from '@mui/material';
 
 function Signup() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState({
     username: '',
@@ -27,6 +29,7 @@ function Signup() {
 
   const onSubmit = async e => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/signup', {
         method: 'POST',
@@ -43,11 +46,13 @@ function Signup() {
     
     } catch (error) {
       enqueueSnackbar('Error: ' + error.message, { variant: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
       
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" style={{ height: '100vh', overflow: 'hidden' }}> 
       <Box sx={{ mt: 8, mb: 2 }}>
         <Typography variant="h4">Sign Up</Typography>
       </Box>
@@ -123,8 +128,9 @@ function Signup() {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
           </Button>
         </Box>
       </Box>

@@ -7,9 +7,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import Container from '@mui/material/Container';
+import { useSnackbar } from 'notistack';
+import { CircularProgress } from '@mui/material';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const { handleLogin } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
@@ -23,6 +27,7 @@ const Login = () => {
 
   const onSubmit = async e => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/login', {
         method: 'POST',
@@ -35,17 +40,21 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         handleLogin(data.token);
-        navigate('*');
+        navigate('/home');
+        enqueueSnackbar(data.msg, { variant: 'success' });
       } else {
-        console.error('Login failed');
-      }
+        const data = await response.json();
+        enqueueSnackbar(data.msg || 'Login failed', { variant: 'error' });
+    }    
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
     
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" style={{ height: '100vh', overflow: 'hidden' }}>
       <Box sx={{ mt: 8, mb: 2 }}>
         <Typography variant="h4">Login</Typography>
       </Box>
@@ -89,8 +98,9 @@ const Login = () => {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={loading}
           >
-            Login
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
           </Button>
         </Box>
       </Box>
