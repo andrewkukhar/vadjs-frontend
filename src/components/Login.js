@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/auth/login', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,12 +37,9 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         handleLogin(data);
         navigate('/home');
-      } else {
-        const data = await response.json();
-    }    
+      }
     } catch (err) {
       console.error(err);
     } finally {

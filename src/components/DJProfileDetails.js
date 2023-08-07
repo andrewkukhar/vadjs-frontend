@@ -18,7 +18,7 @@ function DJProfileDetails({ dj }) {
         sx={{ width: 128, height: 128, p: 3, m: 3 }} 
       />
       <Typography variant="h4" component="h1" gutterBottom>
-        {dj.username}
+        {dj.name}
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom>
         {dj.genres && Array.isArray(dj?.genres) ? dj.genres.join(', ') : ''}

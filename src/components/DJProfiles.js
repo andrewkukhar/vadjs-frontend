@@ -8,9 +8,8 @@ function DJProfiles() {
   const [DJs, setDJs] = useState([]);
   async function fetchDJs() {
     try {
-      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/djs'); 
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/djs`); 
       const data = await response.json();
-      console.log("Fetched DJs:", data);
       return data;
     } catch (error) {
       console.error("Error fetching DJ data:", error);
@@ -19,7 +18,7 @@ function DJProfiles() {
   }
 
   function isDJInfoValid(djInfo) {
-    if (!djInfo) return false; // Ensure djInfo is not null or undefined
+    if (!djInfo) return false;
     
     return Object.values(djInfo).every((value) => {
       // Check if the value is an array and if it's not empty

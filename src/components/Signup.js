@@ -31,7 +31,7 @@ function Signup() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/auth/signup', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

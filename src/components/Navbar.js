@@ -53,7 +53,6 @@ function Navbar() {
         enqueueSnackbar('User logged in', { variant: 'success' });
         setHasShownSnackbar(true);
     }
-    // Reset the state when user logs out (when the token is nullified)
     if (!token) {
         setHasShownSnackbar(false);
     }
