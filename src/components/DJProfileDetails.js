@@ -13,15 +13,15 @@ function DJProfileDetails({ dj }) {
       padding={2}
     >
       <Avatar 
-        alt={dj.name} 
-        src={dj.image} 
+        alt={dj.name || 'DJ'}
+        src={dj.image || ''} 
         sx={{ width: 128, height: 128, p: 3, m: 3 }} 
       />
       <Typography variant="h4" component="h1" gutterBottom>
-        {dj.name}
+        {dj.username}
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom>
-        {dj.genres.join(', ')}
+        {dj.genres && Array.isArray(dj?.genres) ? dj.genres.join(', ') : ''}
       </Typography>
       <Typography variant="body1" gutterBottom>
         {dj.fullBio}

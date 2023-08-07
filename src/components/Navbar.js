@@ -19,7 +19,7 @@ import { useSnackbar } from 'notistack';
 
 function Navbar() {
   const navigate = useNavigate();
-  const { token, handleLogout } = useContext(AuthContext);
+  const { token, handleLogout, username } = useContext(AuthContext);
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);  
@@ -33,15 +33,21 @@ function Navbar() {
   };
 
   const handleRouteChange = (route) => {
-    if (route === 'logout') {
-      handleLogout();
-      navigate('/home');
-    } else {
-      navigate('/home');
+    switch (route) {
+      case 'dj':
+        navigate('/djprofile');
+        break;
+      case 'logout':
+        handleLogout();
+        navigate('/home');
+        break;
+      default:
+        navigate('/home');
+        break;
     }
     setAnchorEl(null);
   };
-
+  
   useEffect(() => {
     if (token && !hasShownSnackbar) {
         enqueueSnackbar('User logged in', { variant: 'success' });
@@ -128,7 +134,7 @@ function Navbar() {
                         />
                       </Stack>
                     </ListItemIcon>
-                    DJ profile
+                    {username ? username : 'DJ Profile'}
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={() => handleRouteChange('logout')}>

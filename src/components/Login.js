@@ -7,13 +7,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import Container from '@mui/material/Container';
-import { useSnackbar } from 'notistack';
 import { CircularProgress } from '@mui/material';
 
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const { handleLogin } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: '',
@@ -29,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/users/login', {
+      const response = await fetch('https://vandjs-backend-api-b8d0ced4040e.herokuapp.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -39,12 +37,11 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        handleLogin(data.token);
+        console.log(data);
+        handleLogin(data);
         navigate('/home');
-        enqueueSnackbar(data.msg, { variant: 'success' });
       } else {
         const data = await response.json();
-        enqueueSnackbar(data.msg || 'Login failed', { variant: 'error' });
     }    
     } catch (err) {
       console.error(err);
@@ -87,8 +84,8 @@ const Login = () => {
               value={password}
               onChange={e => onChange(e)}
               inputProps={{ minLength: 6 }}
-              error={password && password.length < 6}
-              helperText={password && password.length < 6 && "Password should be at least 6 characters"}
+              error={!!password && password.length < 6}
+              helperText={!!password && password.length < 6 && "Password should be at least 6 characters"}
             />
           </Grid>
         </Grid>

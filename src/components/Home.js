@@ -3,6 +3,7 @@ import { useParams, Link, Route, Routes } from 'react-router-dom';
 import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DJProfileDetails from './DJProfileDetails';
+import UserProfile from './UserProfile';
 import AppPages from './AppPages';
 import DJs from '../data/djData';
 import { CircularProgress } from '@mui/material';
@@ -75,6 +76,7 @@ function Home() {
                 <Route key={pagePath} path={pagePath} element={<Component />} />
               ))}
               <Route path="/dj/:id" element={<DJProfileComponent />} />
+              <Route path="/djprofile" element={<UserProfile userType="DJ" />} />
             </Routes>
           </Suspense>
         </Box>
