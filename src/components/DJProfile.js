@@ -13,18 +13,18 @@ function DJProfile({ dj }) {
       padding={2}
     >
       <Avatar 
-        alt={dj.name} 
-        src={dj.image} 
+        alt={dj?.name} 
+        src={dj?.image} 
         sx={{ width: 128, height: 128, p: 3, m: 3 }} 
       />
       <Typography variant="h4" component="h1" gutterBottom>
-        {dj.name}
+        {dj?.name}
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom>
-        {dj.genres.join(', ')}
+        {dj?.genres.join(', ')}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {dj.bio}
+        {dj?.bio}
       </Typography>
     </Box>
   );

@@ -24,7 +24,7 @@ function DJProfileDetails({ dj }) {
         {dj.genres && Array.isArray(dj?.genres) ? dj.genres.join(', ') : ''}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {dj.fullBio}
+        {dj.fullBio.length > 150 ? dj.fullBio.substring(0, 147) + "..." : dj.fullBio}
       </Typography>
       <Typography variant="h6" component="h3" gutterBottom>
         Years Active: {dj.yearsActive}
