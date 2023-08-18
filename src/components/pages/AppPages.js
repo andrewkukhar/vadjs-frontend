@@ -1,25 +1,13 @@
-import DJProfiles from './DJprofiles';
+import DJProfiles from '../djs/DJprofiles';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import InfoIcon from '@mui/icons-material/Info';
 import EventIcon from '@mui/icons-material/Event';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
-
-function HomePage() {
-  return <h2>Home Page with some information</h2>;
-}
-
-function GigsPage() {
-  return <h5>Page will contain all gigs, events, fest or events that DJs will show in profile</h5>;
-}
-
-function ContactUsPage() {
-  return <h5>Contact us page content will be here.</h5>;
-}
-
-function AboutUsPage() {
-  return <h5>About us page content will be here.</h5>;
-}
+import GigsPage from './Gigs';
+import ContactUsPage from './ContactUs';
+import AboutUsPage from './AboutUs';
+import HomePage from './Home';
 
 const AppPages = [
   { path: '/home', name: 'Home', Component: HomePage, Icon: HomeIcon },

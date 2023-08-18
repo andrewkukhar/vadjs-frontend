@@ -55,3 +55,14 @@ export const updateUserProfile = async (token, userId, profileData) => {
   }
   return await response.json();
 };
+
+export const fetchAllDjUpcomingEvents = async () => {
+  const response = await fetch(`${baseUrl}/all-gigs`, {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch gigs');
+  }
+  return await response.json();
+};

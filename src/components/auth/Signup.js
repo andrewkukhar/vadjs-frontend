@@ -52,7 +52,7 @@ function Signup() {
   };
       
   return (
-    <Container maxWidth="xs" style={{ height: '100vh', overflow: 'hidden' }}> 
+    <Container maxWidth="xs" style={{ overflow: 'hidden' }}> 
       <Box sx={{ mt: 8, mb: 2 }}>
         <Typography variant="h4">Sign Up</Typography>
       </Box>

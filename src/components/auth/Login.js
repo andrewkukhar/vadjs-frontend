@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../auth/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -48,7 +48,7 @@ const Login = () => {
   };
     
   return (
-    <Container maxWidth="xs" style={{ height: '100vh', overflow: 'hidden' }}>
+    <Container maxWidth="xs" style={{ overflow: 'hidden' }}>
       <Box sx={{ mt: 8, mb: 2 }}>
         <Typography variant="h4">Login</Typography>
       </Box>

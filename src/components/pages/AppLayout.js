@@ -1,26 +1,54 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect  } from 'react';
 import { useParams, Link, Route, Routes } from 'react-router-dom';
 import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import DJProfileDetails from './DJProfileDetails';
-import UserProfile from './UserProfile';
+import DJProfileDetails from '../djs/DJProfileDetails';
+import UserProfile from '../users/DJUserProfile';
 import AppPages from './AppPages';
-import DJs from '../data/djData';
 import { CircularProgress } from '@mui/material';
-const Signup = React.lazy(() => import('./Signup'));
-const Login = React.lazy(() => import('./Login'));
+
+const Signup = React.lazy(() => import('../auth/Signup'));
+const Login = React.lazy(() => import('../auth/Login'));
 
 function Home() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
   const DJProfileComponent = () => {
-    const { id } = useParams();
-    const dj = DJs.find((dj) => dj.id === parseInt(id));
-    if (!dj) return <p>DJ not found</p>;
-    return <DJProfileDetails dj={dj}/>;
-  };
+    const { djId } = useParams();
+    const [dj, setDj] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);  // New state for loading
+  
+    useEffect(() => {
+      async function fetchDJ() {
+        try {
+          setIsLoading(true);  // Set loading to true before fetching
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/djs/public/${djId}`);
+          const data = await response.json();
+          if (data.msg) {
+            console.log(data.msg);
+            throw new Error(data.msg);
+          }
+          if (!response.ok) {
+            throw new Error(`Failed to fetch DJ. Status: ${response.status}`);
+          }    
+          setDj(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);  // Set loading to false after fetching
+        }
+      }
+  
+      fetchDJ();
+    }, [djId]);
 
+    if (!dj) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><CircularProgress /></div>;
+    if (dj.error) return <p>DJ not found</p>;
+    return <DJProfileDetails dj={dj} isLoading={isLoading} />;
+  };
+  
+  
   const renderList = () => (
     <List>
       {AppPages.map(({ path: pagePath, name, Icon }) => (
@@ -75,7 +103,7 @@ function Home() {
               {AppPages.map(({ path: pagePath, Component }) => (
                 <Route key={pagePath} path={pagePath} element={<Component />} />
               ))}
-              <Route path="/dj/:id" element={<DJProfileComponent />} />
+              <Route path="/dj/:djId" element={<DJProfileComponent />} />
               <Route path="/djprofile" element={<UserProfile userType="DJ" />} />
             </Routes>
           </Suspense>

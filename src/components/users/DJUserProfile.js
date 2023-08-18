@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../auth/AuthContext';
-import * as djService from '../services/djService';
+import { AuthContext } from '../../context/AuthContext';
+import * as djService from '../../services/djService';
 import { TextField, Button, Box, Grid, Select, MenuItem, TextareaAutosize, Input } from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDjData, selectDjData } from '../redux/djSlice';
-import genresData from '../data/genres';
+import { setDjData, selectDjData } from '../../redux/djSlice';
+import genresData from '../../data/genres';
+import dayjs from 'dayjs';
 
 function UserProfile() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function UserProfile() {
         };
       } else if (field.startsWith('upcomingEvents.0.')) {
         const eventField = field.split('.')[2];
-        const updatedEvents = [...prev.upcomingEvents];
+        const updatedEvents = JSON.parse(JSON.stringify(prev.upcomingEvents)); // Deep copying the array
         if (!updatedEvents[0]) {
           updatedEvents[0] = {};
         }
@@ -214,12 +215,11 @@ function UserProfile() {
             <Grid item xs={12} sx={{ p: '1rem' }}>
               <label>First Upcoming Event Date:</label>
               {isEditMode ? (
-                  <DatePicker
-                      label="Event Date"
-                      value={localData?.upcomingEvents?.[0]?.date}
-                      onChange={(newDate) => handleInputChange('upcomingEvents.0.date', newDate.toISOString().split('T')[0])}
-                      renderInput={(params) => <TextField {...params} />}
-                  />
+                <input
+                  type="date"
+                  value={dayjs(localData?.upcomingEvents?.[0]?.date).format('YYYY-MM-DD')}
+                  onChange={(e) => handleInputChange('upcomingEvents.0.date', e.target.value)}
+                />
               ) : (
                   <div>{formatDate(localData?.upcomingEvents?.[0]?.date) || 'N/A'}</div>
               )}
