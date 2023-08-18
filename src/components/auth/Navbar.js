@@ -104,8 +104,8 @@ function Navbar() {
                     <Stack direction="row" spacing={4}>
                       <Avatar
                         alt="DJ"
-                        src="/icons/djicon-w.png"
-                        sx={{ width: 'calc(25px + 5vmin)', height: 'calc(25px + 5vmin)' }}
+                        src="/icons/djicon-lightgrey.png"
+                        sx={{ width: 'calc(25px + 5vmin)', height: 'calc(25px + 5vmin)', color: 'white' }}
                       />
                     </Stack>
                   </IconButton>

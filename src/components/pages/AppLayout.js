@@ -6,6 +6,7 @@ import DJProfileDetails from '../djs/DJProfileDetails';
 import UserProfile from '../users/DJUserProfile';
 import AppPages from './AppPages';
 import { CircularProgress } from '@mui/material';
+import HomePage from './Home';
 
 const Signup = React.lazy(() => import('../auth/Signup'));
 const Login = React.lazy(() => import('../auth/Login'));
@@ -17,12 +18,12 @@ function Home() {
   const DJProfileComponent = () => {
     const { djId } = useParams();
     const [dj, setDj] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);  // New state for loading
+    const [isLoading, setIsLoading] = useState(true);
   
     useEffect(() => {
       async function fetchDJ() {
         try {
-          setIsLoading(true);  // Set loading to true before fetching
+          setIsLoading(true);
           const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/djs/public/${djId}`);
           const data = await response.json();
           if (data.msg) {
@@ -36,7 +37,7 @@ function Home() {
         } catch (error) {
           console.error(error);
         } finally {
-          setIsLoading(false);  // Set loading to false after fetching
+          setIsLoading(false);
         }
       }
   
@@ -105,6 +106,7 @@ function Home() {
               ))}
               <Route path="/dj/:djId" element={<DJProfileComponent />} />
               <Route path="/djprofile" element={<UserProfile userType="DJ" />} />
+              <Route path="*" element={<HomePage />} />
             </Routes>
           </Suspense>
         </Box>

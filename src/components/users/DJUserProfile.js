@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import * as djService from '../../services/djService';
 import { TextField, Button, Box, Grid, Select, MenuItem, TextareaAutosize, Input } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDjData, selectDjData } from '../../redux/djSlice';
 import genresData from '../../data/genres';

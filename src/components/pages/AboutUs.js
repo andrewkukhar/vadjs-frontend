@@ -6,11 +6,11 @@ export default function AboutUsPage() {
         <Container maxWidth="md">
             <Box mt={5} mb={5}>
                 <Typography variant="h4" gutterBottom>
-                    About Us
+                    About Project
                 </Typography>
 
                 <Typography paragraph>
-                    Welcome to Vancouver DJ Central, the one-stop digital hub for all of Vancouver's talented DJs. Our mission is to bring visibility and connectivity to the local DJ scene.
+                    Welcome to Vancouver DJs club, the one-stop digital hub for all of Vancouver's talented DJs. Our mission is to bring visibility and connectivity to the local DJ scene.
                 </Typography>
 
                 <Typography paragraph>

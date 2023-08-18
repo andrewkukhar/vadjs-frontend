@@ -1,6 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
+  djsList: [],
+  loading: false,
   image: '',
   name: '',
   genres: [],
@@ -10,6 +12,17 @@ const initialState = {
   upcomingEvents: [],
   socialMediaLinks: {}
 };
+
+export const fetchDjs = createAsyncThunk('djData/fetchDjs', async () => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/djs`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching DJ data:", error);
+    throw error;
+  }
+});
 
 export const djSlice = createSlice({
   name: 'djData',
@@ -30,10 +43,28 @@ export const djSlice = createSlice({
       const platform = action.payload;
       delete state.socialMediaLinks[platform];
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDjs.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchDjs.fulfilled, (state, action) => {
+        state.djsList = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchDjs.rejected, (state) => {
+        state.loading = false;
+      });
   }
 });
 
-export const { setDjData, updateDjField, addSocialMediaLink, removeSocialMediaLink } = djSlice.actions;
+export const { 
+  setDjData, 
+  updateDjField, 
+  addSocialMediaLink, 
+  removeSocialMediaLink 
+} = djSlice.actions;
 
 export const selectDjData = state => state.djData;
 

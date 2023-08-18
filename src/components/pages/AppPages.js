@@ -10,7 +10,7 @@ import AboutUsPage from './AboutUs';
 import HomePage from './Home';
 
 const AppPages = [
-  { path: '/home', name: 'Home', Component: HomePage, Icon: HomeIcon },
+  { path: '/', name: 'Home', Component: HomePage, Icon: HomeIcon },
   { path: '/alldjs', name: 'All DJs', Component: DJProfiles, Icon: PeopleIcon },
   { path: '/gigs', name: 'Gigs', Component: GigsPage, Icon: EventIcon },
   { path: '/contactus', name: 'Contact Us', Component: ContactUsPage, Icon: ContactSupportIcon },
