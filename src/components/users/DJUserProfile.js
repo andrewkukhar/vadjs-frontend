@@ -13,6 +13,8 @@ function UserProfile() {
   const djData = useSelector(selectDjData) || {};
   const [localData, setLocalData] = useState(djData);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isImageEditMode, setIsImageEditMode] = useState(false);
+  const [file, setFile] = useState(null);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -31,22 +33,15 @@ function UserProfile() {
 
   const handleInputChange = (field, value) => {
     setLocalData(prev => {
-      if (field === 'image' && value) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setLocalData(prev => ({ ...prev, [field]: e.target.result }));
-        };
-        reader.readAsDataURL(value);
-        return prev; 
-      } else if (field.startsWith('socialMediaLinks.')) {
+      if (field.startsWith('socialMediaLinks.')) {
         const platform = field.split('.')[1];
         return {
-          ...prev, 
+          ...prev,
           socialMediaLinks: { ...prev.socialMediaLinks, [platform]: value }
         };
       } else if (field.startsWith('upcomingEvents.0.')) {
         const eventField = field.split('.')[2];
-        const updatedEvents = JSON.parse(JSON.stringify(prev.upcomingEvents)); // Deep copying the array
+        const updatedEvents = JSON.parse(JSON.stringify(prev.upcomingEvents));
         if (!updatedEvents[0]) {
           updatedEvents[0] = {};
         }
@@ -62,26 +57,26 @@ function UserProfile() {
     setLocalData(prev => ({ ...prev, genres: event.target.value }));
   };
     
-  const handleSaveChange = async (field) => {
-    const dataToSend = { ...localData };
-    if (dataToSend.image && dataToSend.image.startsWith('data:')) {
-      dataToSend.image = dataToSend.image.split(",")[1];
-    }
-    
-    try {
-      await djService.updateUserProfile(token, userId, dataToSend);
-      dispatch(setDjData(dataToSend));
-    } catch (error) {
-      console.error(`Error updating ${field || 'profile'}:`, error);
-    }
-  };
-  
   const saveAllChanges = async () => {
     try {
-      await handleSaveChange();
+      await djService.updateUserProfileData(token, userId, localData);
+      
+      if (file) {
+        await djService.updateUserProfileImage(token, userId, file);
+      }
+      
+      dispatch(setDjData(localData));
       setIsEditMode(false);
     } catch (error) {
       console.error("Error saving all changes:", error);
+    }
+  };
+
+  const saveImageChanges = async () => {
+    try {
+        await djService.updateUserProfileImage(token, userId, file);
+    } catch (error) {
+        console.error("Error saving image:", error);
     }
   };
 
@@ -99,15 +94,21 @@ function UserProfile() {
         <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <Grid item xs={12} sx={{ display: 'flex', p: '1rem', flexDirection: 'column' }}>
-                    <label>Profile Image:</label>
-                    {isEditMode ? (
+                <label>Profile Image:</label>
+                {isImageEditMode ? (
+                    <>
                         <input 
                             type="file"
-                            onChange={(e) => handleInputChange('image', e.target.files[0])}
+                            onChange={(e) => setFile(e.target.files[0])}
                         />
-                    ) : (
-                        <img src={localData?.image || 'default-image-path.jpg'} alt="User Profile" width={100} />
-                    )}
+                        <Button onClick={saveImageChanges}>Save Image</Button>
+                    </>
+                ) : (
+                    <>
+                        <img src={localData?.image?.url || '/icons/djicon.png'} alt="User Profile" width={100} />
+                        <Button onClick={() => setIsImageEditMode(true)}>Edit Image</Button>
+                    </>
+                )}
                 </Grid>
             </Grid>
             <Grid item xs={12} md={6}>

@@ -14,32 +14,8 @@ export const fetchDjData = async (token, userId) => {
   return await response.json();
 }
 
-function prepareUpdatedData(data) {
-  let updatedData = {};
-
-  for (const key in data) {
-    if (key === 'djInfo') {
-      for (const djKey in data.djInfo) {
-        updatedData[djKey] = data.djInfo[djKey];
-      }
-    } else {
-      updatedData[key] = data[key];
-    }
-  }
-
-  // Ensure image is formatted correctly for the backend.
-  // If image is an object with contentType and data, convert it to base64 string.
-  if (updatedData.image && typeof updatedData.image === 'object' && updatedData.image.contentType && updatedData.image.data) {
-    updatedData.image = `data:${updatedData.image.contentType};base64,${updatedData.image.data.toString('base64')}`;
-  }
-
-  return updatedData;
-}
-
-export const updateUserProfile = async (token, userId, profileData) => {
+export const updateUserProfileData = async (token, userId, profileData) => {
   const endpoint = `${baseUrl}/${userId}/update`;
-
-  const updatedData = prepareUpdatedData(profileData);
 
   const response = await fetch(endpoint, {
       method: 'PUT',
@@ -47,11 +23,38 @@ export const updateUserProfile = async (token, userId, profileData) => {
         'x-auth-token': `${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updatedData)
+      body: JSON.stringify(profileData)
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update profile');
+  }
+  return await response.json();
+};
+
+export const updateUserProfileImage = async (token, userId, file) => {
+  const endpoint = `${baseUrl}/${userId}/update-image`;
+  
+  const fileToBase64 = new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
   });
   
+  const base64Image = await fileToBase64;
+
+  const response = await fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+          'x-auth-token': `${token}`,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ image: base64Image })
+  });
+
   if (!response.ok) {
-      throw new Error('Failed to update profile');
+      throw new Error('Failed to update image');
   }
   return await response.json();
 };

@@ -3,7 +3,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   djsList: [],
   loading: false,
-  image: '',
+  image: {
+    url: '',
+    public_id: ''
+  },
+
   name: '',
   genres: [],
   bio: '',
