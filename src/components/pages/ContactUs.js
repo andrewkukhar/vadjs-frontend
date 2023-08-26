@@ -1,13 +1,48 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Box, Typography, Link } from '@mui/material';
+import emailjs from 'emailjs-com';
+import { useSnackbar } from 'notistack';
 
 export default function ContactUsPage() {
+    const { enqueueSnackbar } = useSnackbar();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         subject: '',
         message: ''
     });
+    const [errors, setErrors] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const isValid = () => {
+        let valid = true;
+        let tempErrors = {
+            name: '',
+            email: '',
+            subject: '',
+            message: ''
+        };
+
+        // Check if each field is filled out
+        for (const key in formData) {
+            if (!formData[key]) {
+                tempErrors[key] = 'This field is required';
+                valid = false;
+            }
+        }
+
+        // Check if message has at least 25 characters
+        if (formData.message.length < 25) {
+            tempErrors.message = 'Message should be at least 25 characters';
+            valid = false;
+        }
+
+        setErrors(tempErrors);
+        return valid;
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -16,16 +51,26 @@ export default function ContactUsPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // TODO: Handle form submission (send to an API or email service)
-        alert('Form submitted!');
-        setFormData({
-            name: '',
-            email: '',
-            subject: '',
-            message: ''
-        });
-    };
+        
+        if (isValid()) {
+            emailjs.send('service_vd71sm8', 'template_qv7prmf', formData, 'agJWxeoZ_cB9hOqCK')
+                .then((response) => {
+                    enqueueSnackbar('Form submitted!');
+                    setFormData({
+                        name: '',
+                        email: '',
+                        subject: '',
+                        message: ''
+                    });
+                })
+                .catch((err) => {
+                    console.error('FAILED...', err);
+                    alert('Failed to send email. Please try again.');
+                });
+        }
 
+    };
+    
     return (
       <Container maxWidth="xs" >
         <Box
@@ -37,6 +82,9 @@ export default function ContactUsPage() {
             <form onSubmit={handleSubmit}>
                 <TextField
                     fullWidth
+                    required
+                    error={Boolean(errors.name)}
+                    helperText={errors.name}
                     margin="normal"
                     label="Name"
                     name="name"
@@ -45,14 +93,21 @@ export default function ContactUsPage() {
                 />
                 <TextField
                     fullWidth
+                    required
+                    error={Boolean(errors.email)}
+                    helperText={errors.email}
                     margin="normal"
                     label="Email"
                     name="email"
+                    type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                 />
                 <TextField
                     fullWidth
+                    required
+                    error={Boolean(errors.subject)}
+                    helperText={errors.subject}
                     margin="normal"
                     label="Subject"
                     name="subject"
@@ -63,6 +118,9 @@ export default function ContactUsPage() {
                     fullWidth
                     multiline
                     rows={4}
+                    required
+                    error={Boolean(errors.message)}
+                    helperText={errors.message}
                     margin="normal"
                     label="Message"
                     name="message"
