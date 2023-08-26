@@ -34,23 +34,16 @@ export const updateUserProfileData = async (token, userId, profileData) => {
 
 export const updateUserProfileImage = async (token, userId, file) => {
   const endpoint = `${baseUrl}/${userId}/update-image`;
-  
-  const fileToBase64 = new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-  });
-  
-  const base64Image = await fileToBase64;
+
+  const formData = new FormData();
+  formData.append('image', file);
 
   const response = await fetch(endpoint, {
       method: 'PUT',
       headers: {
-          'x-auth-token': `${token}`,
-          'Content-Type': 'application/json'
+          'x-auth-token': `${token}`
       },
-      body: JSON.stringify({ image: base64Image })
+      body: formData
   });
 
   if (!response.ok) {

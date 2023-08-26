@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 function DJProfile({ dj }) {
   if (!dj) return null;
+  const imageUrl = dj?.image?.url || '/icons/djicon.png';
 
   return (
     <Box
@@ -15,10 +16,16 @@ function DJProfile({ dj }) {
         fontSize: 'calc(10px + 2vmin)',
       }}
     >
-      <Avatar 
-        alt={dj?.name} 
-        src={dj?.image} 
-        sx={{ width: 'calc(50px + 2vmin)', height: 'calc(50px + 2vmin)', p: 3, m: 3 }} 
+      <img
+        alt={dj?.name}
+        src={imageUrl}
+        style={{
+          width: 'calc(70px + 25vmin)',
+          height: 'calc(70px + 25vmin)',
+          padding: '1rem',
+          margin: '1rem',
+          objectFit: 'cover',
+        }}
       />
       <Typography variant="h4" component="h1" gutterBottom fontSize="calc(10px + 2vmin)">
         {dj?.name}

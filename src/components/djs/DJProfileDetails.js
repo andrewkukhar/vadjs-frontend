@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Avatar, List, ListItem, Link as MuiLink, CircularProgress } from '@mui/material';
+import { Box, Typography, List, ListItem, Link as MuiLink, CircularProgress } from '@mui/material';
 
 function DJProfileDetails({ dj, isLoading }) {
   if (isLoading) {
@@ -11,6 +11,7 @@ function DJProfileDetails({ dj, isLoading }) {
   }
 
   if (!dj) return null;
+  const imageUrl = dj?.image?.url || '/icons/djicon.png';
 
   return (
     <Box
@@ -20,10 +21,16 @@ function DJProfileDetails({ dj, isLoading }) {
       alignItems="center"
       padding={2}
     >
-      <Avatar 
+      <img
         alt={dj.name || 'DJ'}
-        src={dj.image || ''} 
-        sx={{ width: 128, height: 128, p: 3, m: 3 }} 
+        src={imageUrl}
+        style={{
+          width: 'calc(70px + 25vmin)',
+          height: 'calc(70px + 25vmin)',
+          padding: '1rem',
+          margin: '1rem',
+          objectFit: 'cover',
+        }}
       />
       <Typography variant="h4" component="h1" gutterBottom>
         {dj.name || 'Unknown DJ'}

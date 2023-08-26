@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import * as djService from '../../services/djService';
-import { TextField, Button, Box, Grid, Select, MenuItem, TextareaAutosize, Input } from '@mui/material';
+import { Button, Box, Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDjData, selectDjData } from '../../redux/djSlice';
-import genresData from '../../data/genres';
-import dayjs from 'dayjs';
+import { CircularProgress } from '@mui/material';
+import ProfileImageEditor from './ProfileImageEditor';
+import UserProfileInfo from './UserProfileInfo';
+import LinksEvents from './LinksEvents';
 
 function UserProfile() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const { token, userId } = useContext(AuthContext);
   const djData = useSelector(selectDjData) || {};
   const [localData, setLocalData] = useState(djData);
@@ -16,19 +20,19 @@ function UserProfile() {
   const [isImageEditMode, setIsImageEditMode] = useState(false);
   const [file, setFile] = useState(null);
 
-  function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
-  
   useEffect(() => {
     if (!userId) return;
+    setLoading(true);
     djService.fetchDjData(token, userId)
       .then(data => {
           dispatch(setDjData(data));
           setLocalData(data);
+          setLoading(false);
       })
-      .catch(error => console.error('Error fetching DJ info:', error));
+    .catch(error => {
+      console.error('Error fetching DJ info:', error);
+      setLoading(false);
+    });
   }, [token, userId, dispatch]);
 
   const handleInputChange = (field, value) => {
@@ -57,29 +61,59 @@ function UserProfile() {
     setLocalData(prev => ({ ...prev, genres: event.target.value }));
   };
     
-  const saveAllChanges = async () => {
+  const saveImageChanges = async () => {
+    setSaving(true);
+    try {
+        const updatedDJ = await djService.updateUserProfileImage(token, userId, file);
+
+        const updatedImage = {
+            url: updatedDJ.image.url,
+            public_id: updatedDJ.image.public_id
+        };
+
+        setLocalData(prevData => ({ ...prevData, image: updatedImage }));
+        dispatch(setDjData({ ...djData, image: updatedImage }));
+        setIsImageEditMode(false);
+        setFile(null);
+    } catch (error) {
+        console.error("Error saving image:", error);
+    } finally {
+        setSaving(false);
+    }
+  };
+  
+  const saveUserDataChanges = async () => {
+    setSaving(true);
     try {
       await djService.updateUserProfileData(token, userId, localData);
-      
-      if (file) {
-        await djService.updateUserProfileImage(token, userId, file);
-      }
-      
       dispatch(setDjData(localData));
       setIsEditMode(false);
     } catch (error) {
-      console.error("Error saving all changes:", error);
+      console.error("Error saving user data:", error);
+    } finally {
+        setSaving(false);
     }
   };
 
-  const saveImageChanges = async () => {
-    try {
-        await djService.updateUserProfileImage(token, userId, file);
-    } catch (error) {
-        console.error("Error saving image:", error);
-    }
+  const cancelUserDataChanges = () => {
+    setLocalData(djData);
+    setIsEditMode(false);
   };
 
+  const cancelImageChanges = () => {
+    setIsImageEditMode(false);
+    setFile(null);
+  };
+
+  function extractUsernameFromLink(link) {
+    const parts = link.split('/');
+    return parts[parts.length - 1] || parts[parts.length - 2];
+  }  
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+  
   return (
     <Box
         sx={{
@@ -92,146 +126,46 @@ function UserProfile() {
         }}
     >
         <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-                <Grid item xs={12} sx={{ display: 'flex', p: '1rem', flexDirection: 'column' }}>
-                <label>Profile Image:</label>
-                {isImageEditMode ? (
-                    <>
-                        <input 
-                            type="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                        <Button onClick={saveImageChanges}>Save Image</Button>
-                    </>
-                ) : (
-                    <>
-                        <img src={localData?.image?.url || '/icons/djicon.png'} alt="User Profile" width={100} />
-                        <Button onClick={() => setIsImageEditMode(true)}>Edit Image</Button>
-                    </>
-                )}
-                </Grid>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Grid item xs={12} sx={{ p: '1rem' }}>
-                    <label>Name:</label>
-                    {isEditMode ? (
-                        <TextField 
-                            label="Name"
-                            sx={{ width: '100%' }}
-                            value={localData?.name || ''}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
-                        />
-                    ) : (
-                        <div>{localData?.name || 'N/A'}</div>
-                    )}
-                </Grid>
-                <Grid item xs={12} sx={{ p: '1rem' }}>
-                    <label>Genres:</label>
-                    {isEditMode ? (
-                        <Select
-                            multiple
-                            sx={{ width: '100%' }}
-                            value={localData?.genres || []}
-                            onChange={handleGenresChange}
-                        >
-                            {genresData?.map((genre) => (
-                                <MenuItem key={genre} value={genre}>
-                                    {genre}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    ) : (
-                        <div>{localData?.genres?.join(', ') || 'N/A'}</div>
-                    )}
-                </Grid>
-                <Grid item xs={12} sx={{ p: '1rem' }}>
-                <label>Short Bio:</label>
-                {isEditMode ? (
-                    <TextareaAutosize 
-                        value={localData?.bio || ''}
-                        onChange={(e) => handleInputChange('bio', e.target.value)}
+            {saving ? (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                    <CircularProgress />
+                </Box>
+            ) : (
+                <>
+                    <ProfileImageEditor 
+                        isImageEditMode={isImageEditMode}
+                        localData={localData}
+                        setFile={setFile}
+                        saveImageChanges={saveImageChanges}
+                        setIsImageEditMode={setIsImageEditMode}
+                        cancelImageChanges={cancelImageChanges}
                     />
-                ) : (
-                    <div>{localData?.bio || 'N/A'}</div>
-                )}
-            </Grid>
-
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-                <label>Full Bio:</label>
-                {isEditMode ? (
-                    <TextareaAutosize 
-                        value={localData?.fullBio || ''}
-                        onChange={(e) => handleInputChange('fullBio', e.target.value)}
+                    <UserProfileInfo
+                        isEditMode={isEditMode}
+                        localData={localData}
+                        handleInputChange={handleInputChange}
+                        handleGenresChange={handleGenresChange}
                     />
-                ) : (
-                    <div>{localData?.fullBio || 'N/A'}</div>
-                )}
-            </Grid>
-
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-                <label>Years Active:</label>
-                {isEditMode ? (
-                    <TextField 
-                        value={localData?.yearsActive || ''}
-                        onChange={(e) => handleInputChange('yearsActive', e.target.value)}
+                    <LinksEvents
+                        isEditMode={isEditMode}
+                        localData={localData}
+                        handleInputChange={handleInputChange}
+                        extractUsernameFromLink={extractUsernameFromLink}
                     />
-                ) : (
-                    <div>{localData?.yearsActive || 'N/A'}</div>
-                )}
-            </Grid>
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-                <label>Twitter Link:</label>
-                {isEditMode ? (
-                  <Input 
-                    value={localData?.socialMediaLinks?.twitter || ''}
-                    onChange={(e) => handleInputChange('socialMediaLinks.twitter', e.target.value)}
-                  />
-                ) : (
-                    <div>{localData?.socialMediaLinks?.twitter || 'N/A'}</div>
-                )}
-            </Grid>
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-                <label>Facebook Link:</label>
-                {isEditMode ? (
-                    <Input 
-                        value={localData?.socialMediaLinks?.get('facebook') || ''}
-                        onChange={(e) => handleInputChange('socialMediaLinks.facebook', e.target.value)}
-                    />
-                ) : (
-                    <div>{localData?.socialMediaLinks?.facebook || 'N/A'}</div>
-                )}
-            </Grid>
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-              <label>First Upcoming Event Name:</label>
-              {isEditMode ? (
-                  <TextField 
-                      value={localData?.upcomingEvents?.[0]?.name || ''}
-                      onChange={(e) => handleInputChange('upcomingEvents.0.name', e.target.value)}
-                  />
-              ) : (
-                  <div>{localData?.upcomingEvents?.[0]?.name || 'N/A'}</div>
-              )}
-            </Grid>
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-              <label>First Upcoming Event Date:</label>
-              {isEditMode ? (
-                <input
-                  type="date"
-                  value={dayjs(localData?.upcomingEvents?.[0]?.date).format('YYYY-MM-DD')}
-                  onChange={(e) => handleInputChange('upcomingEvents.0.date', e.target.value)}
-                />
-              ) : (
-                  <div>{formatDate(localData?.upcomingEvents?.[0]?.date) || 'N/A'}</div>
-              )}
-            </Grid>
-            <Grid item xs={12} sx={{ p: '1rem' }}>
-                {!isEditMode ? (
-                    <Button onClick={() => setIsEditMode(true)}>Edit</Button>
-                ) : (
-                    <Button onClick={saveAllChanges}>Save</Button>
-                )}
-            </Grid>
-            </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sx={{ p: '1rem' }}>
+                            {!isEditMode ? (
+                                <Button onClick={() => setIsEditMode(true)}>Edit</Button>
+                            ) : (
+                                <>
+                                    <Button onClick={saveUserDataChanges}>Save</Button>
+                                    <Button onClick={cancelUserDataChanges} color="secondary">Cancel</Button>
+                                </>
+                            )}
+                        </Grid>
+                    </Grid>
+                </>
+            )}
         </Grid>
     </Box>
   );
