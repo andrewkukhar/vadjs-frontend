@@ -5,6 +5,11 @@ function DJProfile({ dj }) {
   if (!dj) return null;
   const imageUrl = dj?.image?.url || '/icons/djicon.png';
 
+  function formatGenres(genres) {
+    if (!genres || !genres.length) return '';
+    return genres.slice(0, 3).join(', ');
+  }
+
   return (
     <Box
       sx={{
@@ -20,8 +25,8 @@ function DJProfile({ dj }) {
         alt={dj?.name}
         src={imageUrl}
         style={{
-          width: 'calc(70px + 25vmin)',
-          height: 'calc(70px + 25vmin)',
+          width: 'calc(65px + 25vmin)',
+          height: 'calc(65px + 25vmin)',
           padding: '1rem',
           margin: '1rem',
           objectFit: 'cover',
@@ -30,10 +35,10 @@ function DJProfile({ dj }) {
       <Typography variant="h4" component="h1" gutterBottom fontSize="calc(10px + 2vmin)">
         {dj?.name}
       </Typography>
-      <Typography variant="h5" component="h2" gutterBottom fontSize="calc(15px + 1vmin)">
-        {dj?.genres.join(', ')}
+      <Typography variant="h5" component="h2" gutterBottom fontSize="calc(7px + 1vmin)">
+        {formatGenres(dj?.genres)}
       </Typography>
-      <Typography variant="body1" gutterBottom fontSize="calc(10px + 1vmin)">
+      <Typography variant="body1" gutterBottom fontSize="calc(7px + 1vmin)">
         {dj?.bio}
       </Typography>
     </Box>
