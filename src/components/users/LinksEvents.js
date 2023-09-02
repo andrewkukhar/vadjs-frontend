@@ -9,10 +9,11 @@ dayjs.extend(timezone);
 
 export default function LinksEvents({ isEditMode, localData, handleInputChange, extractUsernameFromLink }) {    
     function formatDate(dateString) {
+        if (!dateString) return '';
         return dayjs.tz(dateString, 'America/Los_Angeles').utc().format('MM/DD/YY');
     }
-        
-  return (
+  
+    return (
       <Grid item xs={12} md={6}>
         <Grid item xs={12} sx={{ p: '1rem' }}>
             <label>Instagram Link:</label>
@@ -128,27 +129,27 @@ export default function LinksEvents({ isEditMode, localData, handleInputChange, 
             )}
         </Grid>
         <Grid item xs={12} sx={{ p: '1rem' }}>
-        <label>First Upcoming Event Name:</label>
-        {isEditMode ? (
-            <TextField 
-                value={localData?.upcomingEvents?.[0]?.name || ''}
-                onChange={(e) => handleInputChange('upcomingEvents.0.name', e.target.value)}
-            />
-        ) : (
-            <div>{localData?.upcomingEvents?.[0]?.name || 'N/A'}</div>
-        )}
-        </Grid>
-        <Grid item xs={12} sx={{ p: '1rem' }}>
-            <label>First Upcoming Event Date:</label>
+            <label>First Upcoming Event Name:</label>
             {isEditMode ? (
-                <input
-                    type="date"
-                    value={formatDate(localData?.upcomingEvents?.[0]?.date)}
-                    onChange={(e) => handleInputChange('upcomingEvents.0.date', formatDate(e.target.value))}
+                <TextField 
+                    value={localData?.upcomingEvents?.[0]?.name || ''}
+                    onChange={(e) => handleInputChange('upcomingEvents.0.name', e.target.value)}
                 />
             ) : (
-                <div>{formatDate(localData?.upcomingEvents?.[0]?.date) || 'N/A'}</div>
+                <div>{localData?.upcomingEvents?.[0]?.name || 'N/A'}</div>
             )}
+            </Grid>
+            <Grid item xs={12} sx={{ p: '1rem' }}>
+                <label>First Upcoming Event Date:</label>
+                {isEditMode ? (
+                    <input
+                        type="date"
+                        value={formatDate(localData?.upcomingEvents?.[0]?.date) || ''}
+                        onChange={(e) => handleInputChange('upcomingEvents.0.date', formatDate(e.target.value))}
+                    />
+                ) : (
+                    <div>{formatDate(localData?.upcomingEvents?.[0]?.date) || 'N/A'}</div>
+                )}
         </Grid>
       </Grid>
   );

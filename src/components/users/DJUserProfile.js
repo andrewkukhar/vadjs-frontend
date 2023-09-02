@@ -125,6 +125,18 @@ function UserProfile() {
             p: 'calc(5px + 1vmin)',
         }}
     >
+        <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} sx={{ p: '1rem' }}>
+              {!isEditMode ? (
+                  <Button onClick={() => setIsEditMode(true)}>Edit</Button>
+              ) : (
+                  <>
+                      <Button onClick={saveUserDataChanges}>Save</Button>
+                      <Button onClick={cancelUserDataChanges} color="secondary">Cancel</Button>
+                  </>
+              )}
+          </Grid> */}
+        </Grid>
         <Grid container spacing={3}>
             {saving ? (
                 <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -132,38 +144,36 @@ function UserProfile() {
                 </Box>
             ) : (
                 <>
-                    <ProfileImageEditor 
-                        isImageEditMode={isImageEditMode}
-                        localData={localData}
-                        setFile={setFile}
-                        saveImageChanges={saveImageChanges}
-                        setIsImageEditMode={setIsImageEditMode}
-                        cancelImageChanges={cancelImageChanges}
-                    />
-                    <UserProfileInfo
-                        isEditMode={isEditMode}
-                        localData={localData}
-                        handleInputChange={handleInputChange}
-                        handleGenresChange={handleGenresChange}
-                    />
-                    <LinksEvents
-                        isEditMode={isEditMode}
-                        localData={localData}
-                        handleInputChange={handleInputChange}
-                        extractUsernameFromLink={extractUsernameFromLink}
-                    />
-                    <Grid item xs={12} md={6}>
-                        <Grid item xs={12} sx={{ p: '1rem' }}>
-                            {!isEditMode ? (
-                                <Button onClick={() => setIsEditMode(true)}>Edit</Button>
-                            ) : (
-                                <>
-                                    <Button onClick={saveUserDataChanges}>Save</Button>
-                                    <Button onClick={cancelUserDataChanges} color="secondary">Cancel</Button>
-                                </>
-                            )}
-                        </Grid>
-                    </Grid>
+                  <Grid item xs={12} sx={{ p: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                      {!isEditMode ? (
+                          <Button onClick={() => setIsEditMode(true)}>Edit Profile Info</Button>
+                      ) : (
+                          <>
+                              <Button onClick={saveUserDataChanges}>Save</Button>
+                              <Button onClick={cancelUserDataChanges} color="secondary">Cancel</Button>
+                          </>
+                      )}
+                  </Grid>
+                  <ProfileImageEditor 
+                      isImageEditMode={isImageEditMode}
+                      localData={localData}
+                      setFile={setFile}
+                      saveImageChanges={saveImageChanges}
+                      setIsImageEditMode={setIsImageEditMode}
+                      cancelImageChanges={cancelImageChanges}
+                  />
+                  <UserProfileInfo
+                      isEditMode={isEditMode}
+                      localData={localData}
+                      handleInputChange={handleInputChange}
+                      handleGenresChange={handleGenresChange}
+                  />
+                  <LinksEvents
+                      isEditMode={isEditMode}
+                      localData={localData}
+                      handleInputChange={handleInputChange}
+                      extractUsernameFromLink={extractUsernameFromLink}
+                  />
                 </>
             )}
         </Grid>

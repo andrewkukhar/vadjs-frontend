@@ -85,9 +85,10 @@ function Signup() {
                 onChange={e => onChange(e)}
                 label="Role"
             >
-                <MenuItem value={'DJ'}>DJ</MenuItem>
-                <MenuItem value={'Promoter'}>Promoter</MenuItem>
-                <MenuItem value={'Listener'}>Listener</MenuItem>
+              <MenuItem value={'DJ'}>DJ (Currently, only DJ registration is supported)</MenuItem>
+              {/* Comment these lines out for now */}
+              {/* <MenuItem value={'Promoter'}>Promoter</MenuItem> */}
+              {/* <MenuItem value={'Listener'}>Listener</MenuItem> */}
             </Select>
           </Grid>
           <Grid item xs={12}>
