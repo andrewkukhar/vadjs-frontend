@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, List, ListItem, Link as MuiLink, CircularProgress } from '@mui/material';
+import { formatDate } from '../../services/helpUtils';
 
 function DJProfileDetails({ dj, isLoading }) {
   if (isLoading) {
@@ -25,8 +26,9 @@ function DJProfileDetails({ dj, isLoading }) {
         alt={dj.name || 'DJ'}
         src={imageUrl}
         style={{
-          width: 'calc(70px + 25vmin)',
-          height: 'calc(70px + 25vmin)',
+          width: '100%',
+          maxWidth: '30rem',
+          height: 'auto',
           padding: '1rem',
           margin: '1rem',
           objectFit: 'cover',
@@ -50,7 +52,7 @@ function DJProfileDetails({ dj, isLoading }) {
       <List>
         {dj.upcomingEvents && dj.upcomingEvents.length > 0 ? (dj.upcomingEvents.map((event, index) => (
           <ListItem key={index}>
-            {event.name} on {event.date}
+            {event.name} on {formatDate(event.date)}
           </ListItem>) 
         )) : (
             <Typography variant="body2">No upcoming events.</Typography>

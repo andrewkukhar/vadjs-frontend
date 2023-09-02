@@ -1,18 +1,8 @@
 import React from 'react';
 import { TextField, Grid, Input, Link } from '@mui/material';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { formatDate } from '../../services/helpUtils';
 
 export default function LinksEvents({ isEditMode, localData, handleInputChange, extractUsernameFromLink }) {    
-    function formatDate(dateString) {
-        if (!dateString) return '';
-        return dayjs.tz(dateString, 'America/Los_Angeles').utc().format('MM/DD/YY');
-    }
-  
     return (
       <Grid item xs={12} md={6}>
         <Grid item xs={12} sx={{ p: '1rem' }}>

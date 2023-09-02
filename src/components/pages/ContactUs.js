@@ -26,7 +26,6 @@ export default function ContactUsPage() {
             message: ''
         };
 
-        // Check if each field is filled out
         for (const key in formData) {
             if (!formData[key]) {
                 tempErrors[key] = 'This field is required';
@@ -34,7 +33,6 @@ export default function ContactUsPage() {
             }
         }
 
-        // Check if message has at least 25 characters
         if (formData.message.length < 25) {
             tempErrors.message = 'Message should be at least 25 characters';
             valid = false;
@@ -74,7 +72,7 @@ export default function ContactUsPage() {
     return (
       <Container maxWidth="xs" >
         <Box
-          sx={{ width: '100%', padding: '2rem 1rem 1rem 1rem' }}
+          sx={{ width: '100%', padding: '2rem 0.5rem .5rem 0rem' }}
         >
             <Typography variant="h4">Contact Us</Typography>
             <Typography paragraph>If you have any questions or concerns, please contact us using the form below:</Typography>
@@ -136,7 +134,6 @@ export default function ContactUsPage() {
                     Submit
                 </Button>
             </form>
-
             <Box mt={4}>
                 <Typography variant="h6">Other ways to contact us:</Typography>
                 <Typography paragraph>Email: andrewrisedj@gmail.com</Typography>

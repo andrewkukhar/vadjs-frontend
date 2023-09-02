@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, List, ListItem, Divider, TextField, styled } from '@mui/material';
+import { Grid, Box, Typography, List, ListItem, Divider, TextField, styled } from '@mui/material';
 import { StaticDatePicker, LocalizationProvider, PickersDay } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,41 +62,58 @@ export default function GigsPage() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box p={3}>
+      <Box
+        sx={{
+          p: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          margin: '1rem 0 0 0',
+        }}
+      >
         <Typography variant="h4" gutterBottom>All Gigs</Typography>
-        {loading ? (
-          <Typography>Loading...</Typography>
-        ) : (
-          <StaticDatePicker
-            displayStaticWrapperAs="desktop"
-            value={selectedDate}
-            onChange={handleDateChange}
-            textField={<TextField />}
-            slots={{ day: GigDay }}
-            slotProps={{ day: { highlightedDays: eventDates } }}
-          />
-        )}
-        <List>
-          {displayDJs.length > 0 ? (
-            displayDJs.map((dj) => (
-              <div key={dj._id}>
-                <ListItem>
-                  <Box flex={1}>
-                    <Typography variant="h6">{dj.name}</Typography>
-                    {dj.upcomingEvents.map(event => (
-                      <div key={event._id}>
-                        <Typography variant="body1">{event.name} - {new Date(event.date).toLocaleDateString()}</Typography>
-                      </div>
-                    ))}
-                  </Box>
-                </ListItem>
-                <Divider />
-              </div>
-            ))
-          ) : (
-            <Typography variant="h6" align="center">No events on the selected date.</Typography>
-          )}
-        </List>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={6}>
+            {loading ? (
+              <Typography>Loading...</Typography>
+            ) : (
+              <StaticDatePicker
+                displayStaticWrapperAs="desktop"
+                value={selectedDate}
+                onChange={handleDateChange}
+                textField={<TextField />}
+                slots={{ day: GigDay }}
+                slotProps={{ day: { highlightedDays: eventDates } }}
+                sx={{width: '100%', p: 0, m: 0 }}
+              />
+            )}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <List>
+              {displayDJs.length > 0 ? (
+                displayDJs.map((dj) => (
+                  <div key={dj._id}>
+                    <ListItem>
+                      <Box flex={1}>
+                        <Typography variant="h6">{dj.name}</Typography>
+                        {dj.upcomingEvents.map(event => (
+                          <div key={event._id}>
+                            <Typography variant="body1">{event.name} - {new Date(event.date).toLocaleDateString()}</Typography>
+                          </div>
+                        ))}
+                      </Box>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                ))
+              ) : (
+                <Typography variant="h6" align="center">No events on the selected date.</Typography>
+              )}
+            </List>
+          </Grid>
+        </Grid>
       </Box>
     </LocalizationProvider>
   );

@@ -80,7 +80,7 @@ function Home() {
         <Box 
           width="calc(15% + 2vmin)" 
           bgcolor="darkgrey" 
-          p={2} 
+          p={1} 
           position="sticky" 
           top={0}
           bottom={0}
