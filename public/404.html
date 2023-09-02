@@ -19,6 +19,9 @@
         '#/' +
         window.location.pathname.slice(1)
       );
+      console.log("404 script running");
+console.log("Redirecting to:", location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + newPathname + '?' + '#/' + window.location.pathname.slice(1));
+
     </script>
       </head>
   <body>
