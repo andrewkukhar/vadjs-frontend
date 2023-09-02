@@ -69,44 +69,42 @@ function DJProfilesPreview() {
 
     return (
       <Box padding={2} className="dj-preview-section">
-          <Typography variant="h5" gutterBottom>Featured DJs</Typography>
-          {DJs && DJs.length > 0 ? (
-              <Slider {...sliderSettings}>
-                  {DJs.filter(dj => isDJInfoValid(dj)).map(dj => (
-                    <div 
-                        key={dj._id} 
-                        style={{ 
-                            border: '2px solid #e0e0e0', 
-                            padding: '10px', 
-                            borderRadius: '10px', 
-                            margin: '0 10px',
-                            flex: 1,
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Card 
-                            onClick={() => handleDJClick(dj._id)} 
-                            style={{ 
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                flexGrow: 1,
-                                flex: 1,
-                            }}
-                        >
-                            <CardActionArea>
-                                <DJProfile dj={dj} />
-                            </CardActionArea>
-                        </Card>
-                    </div>
-                  ))}
-              </Slider>
-          ) : (
-              <Typography variant="body2">No DJs available at the moment.</Typography>
-          )}
-          <Button variant="text" onClick={() => navigate('/alldjs')}>See All DJs</Button>
+        <Typography variant="h5" gutterBottom>Featured DJs</Typography>
+        {DJs && DJs.length > 0 ? (
+            <Slider {...sliderSettings}>
+                {DJs.filter(dj => isDJInfoValid(dj)).map(dj => (
+                  <div 
+                      key={dj._id} 
+                      style={{ 
+                          border: '2px solid #e0e0e0', 
+                          padding: '10px', 
+                          borderRadius: '10px', 
+                          margin: '10px',
+                      }}
+                  >
+                      <Card 
+                          onClick={() => handleDJClick(dj._id)} 
+                          style={{ 
+                              display: 'flex', 
+                              flexDirection: 'column', 
+                              flexGrow: 1,
+                              flex: 1,
+                              height: '400px'  // fixed height
+                          }}
+                      >
+                          <CardActionArea style={{ flexGrow: 1 }}>
+                              <DJProfile dj={dj} />
+                          </CardActionArea>
+                      </Card>
+                  </div>
+                ))}
+            </Slider>
+        ) : (
+            <Typography variant="body2">No DJs available at the moment.</Typography>
+        )}
+        <Button sx={{mt: '1.5rem',}} variant="text" onClick={() => navigate('/alldjs')}>See All DJs</Button>
       </Box>
-  );
+    );
 }
 
 export default React.memo(DJProfilesPreview);

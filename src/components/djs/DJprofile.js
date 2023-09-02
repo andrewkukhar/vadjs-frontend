@@ -15,9 +15,10 @@ function DJProfile({ dj }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 2,
+        flexGrow: 1, // take available vertical space
         fontSize: 'calc(10px + 2vmin)',
       }}
     >
