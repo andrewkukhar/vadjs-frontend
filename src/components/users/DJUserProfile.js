@@ -1,40 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import * as djService from "../../services/djService";
 import { Button, Box, Grid } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { setDjData, selectDjData } from "../../redux/djSlice";
+import {
+  useFetchDjDataQuery,
+  useUpdateUserProfileMutation,
+  useUpdateUserProfileImageMutation,
+} from "../../services/djs";
 import { CircularProgress } from "@mui/material";
 import ProfileImageEditor from "./ProfileImageEditor";
 import UserProfileInfo from "./UserProfileInfo";
 import LinksEvents from "./LinksEvents";
 
 function UserProfile() {
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const { token, userId } = useContext(AuthContext);
-  const djData = useSelector(selectDjData) || {};
+  const { userId } = useContext(AuthContext);
+  const { data: djData, isLoading } = useFetchDjDataQuery(userId);
   const [localData, setLocalData] = useState(djData);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isImageEditMode, setIsImageEditMode] = useState(false);
   const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    if (!userId) return;
-    setLoading(true);
-    djService
-      .fetchDjData(token, userId)
-      .then((data) => {
-        dispatch(setDjData(data));
-        setLocalData(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching DJ info:", error);
-        setLoading(false);
-      });
-  }, [token, userId, dispatch]);
+  const [updateUserProfile] = useUpdateUserProfileMutation();
+  const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
 
   const handleInputChange = (field, value) => {
     setLocalData((prev) => {
@@ -65,11 +51,7 @@ function UserProfile() {
   const saveImageChanges = async () => {
     setSaving(true);
     try {
-      const updatedDJ = await djService.updateUserProfileImage(
-        token,
-        userId,
-        file
-      );
+      const updatedDJ = await updateUserProfileImage({ userId, file });
 
       const updatedImage = {
         url: updatedDJ.image.url,
@@ -77,7 +59,6 @@ function UserProfile() {
       };
 
       setLocalData((prevData) => ({ ...prevData, image: updatedImage }));
-      dispatch(setDjData({ ...djData, image: updatedImage }));
       setIsImageEditMode(false);
       setFile(null);
     } catch (error) {
@@ -90,8 +71,7 @@ function UserProfile() {
   const saveUserDataChanges = async () => {
     setSaving(true);
     try {
-      await djService.updateUserProfileData(token, userId, localData);
-      dispatch(setDjData(localData));
+      await updateUserProfile({ userId, profileData: localData });
       setIsEditMode(false);
     } catch (error) {
       console.error("Error saving user data:", error);
@@ -115,7 +95,7 @@ function UserProfile() {
     return parts[parts.length - 1] || parts[parts.length - 2];
   }
 
-  if (loading) {
+  if (isLoading) {
     return <CircularProgress />;
   }
 

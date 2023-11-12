@@ -1,0 +1,33 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.app-body {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+.main-content {
+  position: relative;
+  width: calc(100% - #{$sidebar-width});
+  height: calc(100% - #{$navbar-height});
+  background-color: lightgrey;
+  overflow: auto;
+  padding: 2rem;
+}
+
+.no-sidebar {
+  position: relative;
+  height: calc(100% - #{$navbar-height});
+  width: 100%;
+  background-color: lightgrey;
+  overflow: auto;
+  padding: 2rem;
+}

@@ -1,30 +1,41 @@
-import React, { Suspense, useState, useEffect  } from 'react';
-import { useParams, Link, Route, Routes } from 'react-router-dom';
-import { Box, List, ListItem, ListItemText, useMediaQuery, Grid, Tooltip, IconButton } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import DJProfileDetails from '../djs/DJProfileDetails';
-import UserProfile from '../users/DJUserProfile';
-import AppPages from './AppPages';
-import { CircularProgress } from '@mui/material';
-import HomePage from './Home';
+import React, { Suspense, useState, useEffect } from "react";
+import { useParams, Link, Route, Routes } from "react-router-dom";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  useMediaQuery,
+  Grid,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import DJProfileDetails from "../djs/DJProfileDetails";
+import UserProfile from "../users/DJUserProfile";
+import AppPages from "./AppPages";
+import { CircularProgress } from "@mui/material";
+import HomePage from "./Home";
 
-const Signup = React.lazy(() => import('../auth/Signup'));
-const Login = React.lazy(() => import('../auth/Login'));
+const Signup = React.lazy(() => import("../auth/Signup"));
+const Login = React.lazy(() => import("../auth/Login"));
 
 function Home() {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   const DJProfileComponent = () => {
     const { djId } = useParams();
     const [dj, setDj] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-  
+
     useEffect(() => {
       async function fetchDJ() {
         try {
           setIsLoading(true);
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/djs/public/${djId}`);
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/djs/public/${djId}`
+          );
           const data = await response.json();
           if (data.msg) {
             console.log(data.msg);
@@ -32,7 +43,7 @@ function Home() {
           }
           if (!response.ok) {
             throw new Error(`Failed to fetch DJ. Status: ${response.status}`);
-          }    
+          }
           setDj(data);
         } catch (error) {
           console.error(error);
@@ -40,19 +51,30 @@ function Home() {
           setIsLoading(false);
         }
       }
-  
+
       fetchDJ();
     }, [djId]);
 
-    if (!dj) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><CircularProgress /></div>;
+    if (!dj)
+      return (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      );
     if (dj.error) return <p>DJ not found</p>;
     return <DJProfileDetails dj={dj} isLoading={isLoading} />;
   };
-  
-  
+
   const renderList = () => (
     <List>
-      {AppPages.map(({ path: pagePath, name, Icon }) => (
+      {AppPages?.map(({ path: pagePath, name, Icon }) => (
         <ListItem button key={pagePath} component={Link} to={pagePath}>
           <ListItemText primary={name} />
         </ListItem>
@@ -61,7 +83,12 @@ function Home() {
   );
 
   const renderIconGrid = () => (
-    <Grid container direction="column" justifyContent="center" alignItems="center">
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       {AppPages.map(({ path: pagePath, name, Icon }) => (
         <Grid item key={pagePath}>
           <Tooltip title={name}>
@@ -77,11 +104,11 @@ function Home() {
   return (
     <Box display="flex" flexDirection="column" height="100vh" overflow="hidden">
       <Box display="flex" flex="1" overflow="hidden">
-        <Box 
-          width="calc(15% + 2vmin)" 
-          bgcolor="darkgrey" 
-          p={1} 
-          position="sticky" 
+        <Box
+          width="calc(15% + 2vmin)"
+          bgcolor="darkgrey"
+          p={1}
+          position="sticky"
           top={0}
           bottom={0}
           pt="calc(30px + 5vmin)"
@@ -89,15 +116,28 @@ function Home() {
         >
           {matches ? renderIconGrid() : renderList()}
         </Box>
-        <Box 
-          width="calc(85% - 2vmin)" 
-          bgcolor="white" 
+        <Box
+          width="calc(85% - 2vmin)"
+          bgcolor="white"
           p={2}
           pt="calc(25px + 5vmin)"
           pb="calc(150px + 15vmin)"
           overflow="auto"
         >
-          <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><CircularProgress /></div>}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
+                }}
+              >
+                <CircularProgress />
+              </div>
+            }
+          >
             <Routes>
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
@@ -105,7 +145,10 @@ function Home() {
                 <Route key={pagePath} path={pagePath} element={<Component />} />
               ))}
               <Route path="/dj/:djId" element={<DJProfileComponent />} />
-              <Route path="/djprofile" element={<UserProfile userType="DJ" />} />
+              <Route
+                path="/djprofile"
+                element={<UserProfile userType="DJ" />}
+              />
               <Route path="*" element={<HomePage />} />
             </Routes>
           </Suspense>

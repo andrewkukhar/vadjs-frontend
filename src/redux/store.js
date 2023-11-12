@@ -1,10 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
-import djReducer from './djSlice';
-import gigsReducer from './gigsSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
-export const store = configureStore({
+import emailsApi from "../services/emails";
+import djsApi from "../services/djs";
+
+const store = configureStore({
   reducer: {
-    djData: djReducer,
-    gigs: gigsReducer,
-  }
+    [emailsApi.reducerPath]: emailsApi.reducer,
+    [djsApi.reducerPath]: djsApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(emailsApi.middleware)
+      .concat(djsApi.middleware),
 });
+
+setupListeners(store.dispatch);
+
+export default store;

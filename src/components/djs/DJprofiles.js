@@ -1,31 +1,29 @@
-import React, { useEffect } from 'react';
-import { Box, Grid, Card, CardActionArea } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import DJProfile from './DJprofile';
-import { CircularProgress } from '@mui/material';
-import { fetchDjs, selectDjData } from '../../redux/djSlice';
+import React from "react";
+import { Box, Grid, Card, CardActionArea } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useFetchAllDjUpcomingEventsQuery } from "../../services/djs";
+import DJProfile from "./DJprofile";
+import { CircularProgress } from "@mui/material";
 function DJProfiles() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { djsList: DJs, loading } = useSelector(selectDjData);
+  const { data: DJs, isLoading } = useFetchAllDjUpcomingEventsQuery();
 
   function isDJInfoValid(dj) {
-    return dj && dj.name;
+    return dj && dj?.name;
   }
 
   const handleDJClick = (djId) => {
     navigate(`/dj/${djId}`);
   };
 
-  useEffect(() => {
-    dispatch(fetchDjs());
-  }, [dispatch]);
-
-  if (loading) {
+  if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -34,17 +32,19 @@ function DJProfiles() {
   return (
     <Box padding={2}>
       <Grid container spacing={3}>
-        {DJs.filter(dj => isDJInfoValid(dj))
-            .map(dj => (
-          <Grid item xs={12} sm={6} md={4} key={dj._id}>
-            <Card onClick={() => handleDJClick(dj._id)} sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 2,
-              fontSize: 'calc(7px + 2vmin)',
-            }}> 
+        {DJs?.filter((dj) => isDJInfoValid(dj)).map((dj) => (
+          <Grid item xs={12} sm={6} md={4} key={dj?._id}>
+            <Card
+              onClick={() => handleDJClick(dj?._id)}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 2,
+                fontSize: "calc(7px + 2vmin)",
+              }}
+            >
               <CardActionArea>
                 <DJProfile dj={dj} />
               </CardActionArea>

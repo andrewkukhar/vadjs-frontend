@@ -1,9 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Box, Typography, List, ListItem, Divider, TextField, styled } from '@mui/material';
-import { StaticDatePicker, LocalizationProvider, PickersDay } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchGigs, selectGigsData } from '../../redux/gigsSlice';
+import React, { useState } from "react";
+import {
+  Grid,
+  Box,
+  Typography,
+  List,
+  ListItem,
+  Divider,
+  TextField,
+  styled,
+} from "@mui/material";
+import {
+  StaticDatePicker,
+  LocalizationProvider,
+  PickersDay,
+} from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { useFetchAllDjUpcomingEventsQuery } from "../../services/djs";
 
 const HighlightedDay = styled(PickersDay)(({ theme }) => ({
   "&.Mui-selected": {
@@ -21,7 +33,7 @@ const GigDay = (props) => {
 
   const isSelected =
     !outsideCurrentMonth &&
-    highlightedDays.includes(day.toISOString().split('T')[0]);
+    highlightedDays.includes(day.toISOString().split("T")[0]);
 
   return (
     <HighlightedDay
@@ -35,28 +47,30 @@ const GigDay = (props) => {
 };
 
 export default function GigsPage() {
-  const dispatch = useDispatch();
-  const { gigsList: djs, loading } = useSelector(selectGigsData);
+  const { data: djs, isLoading } = useFetchAllDjUpcomingEventsQuery();
   const [selectedDate, setSelectedDate] = useState(null);
-  
-  useEffect(() => {
-    dispatch(fetchGigs());
-  }, [dispatch]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const filteredDJs = selectedDate ? 
-  djs.filter(dj => {
-    return dj.upcomingEvents.some(event => new Date(event.date).toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0]);
-  }) : djs;
+  const filteredDJs = selectedDate
+    ? djs?.filter((dj) => {
+        return dj.upcomingEvents.some(
+          (event) =>
+            new Date(event?.date)?.toISOString().split("T")[0] ===
+            selectedDate?.toISOString().split("T")[0]
+        );
+      })
+    : djs;
 
-  const displayDJs = filteredDJs.filter(dj => dj.upcomingEvents.length > 0);
+  const displayDJs = filteredDJs?.filter(
+    (dj) => dj?.upcomingEvents?.length > 0
+  );
   const eventDates = [];
-  djs.forEach(dj => {
-    dj.upcomingEvents.forEach(event => {
-      eventDates.push(new Date(event.date).toISOString().split('T')[0]);
+  djs?.forEach((dj) => {
+    dj?.upcomingEvents?.forEach((event) => {
+      eventDates?.push(new Date(event?.date)?.toISOString().split("T")[0]);
     });
   });
 
@@ -65,18 +79,20 @@ export default function GigsPage() {
       <Box
         sx={{
           p: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           flex: 1,
-          margin: '1rem 0 0 0',
+          margin: "1rem 0 0 0",
         }}
       >
-        <Typography variant="h4" gutterBottom>All Gigs</Typography>
+        <Typography variant="h4" gutterBottom>
+          All Gigs
+        </Typography>
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
-            {loading ? (
+            {isLoading ? (
               <Typography>Loading...</Typography>
             ) : (
               <StaticDatePicker
@@ -86,21 +102,24 @@ export default function GigsPage() {
                 textField={<TextField />}
                 slots={{ day: GigDay }}
                 slotProps={{ day: { highlightedDays: eventDates } }}
-                sx={{width: '100%', p: 0, m: 0 }}
+                sx={{ width: "100%", p: 0, m: 0 }}
               />
             )}
           </Grid>
           <Grid item xs={12} md={6}>
             <List>
-              {displayDJs.length > 0 ? (
-                displayDJs.map((dj) => (
-                  <div key={dj._id}>
+              {displayDJs?.length > 0 ? (
+                displayDJs?.map((dj) => (
+                  <div key={dj?._id}>
                     <ListItem>
                       <Box flex={1}>
-                        <Typography variant="h6">{dj.name}</Typography>
-                        {dj.upcomingEvents.map(event => (
-                          <div key={event._id}>
-                            <Typography variant="body1">{event.name} - {new Date(event.date).toLocaleDateString()}</Typography>
+                        <Typography variant="h6">{dj?.name}</Typography>
+                        {dj?.upcomingEvents?.map((event) => (
+                          <div key={event?._id}>
+                            <Typography variant="body1">
+                              {event?.name} -{" "}
+                              {new Date(event?.date).toLocaleDateString()}
+                            </Typography>
                           </div>
                         ))}
                       </Box>
@@ -109,7 +128,9 @@ export default function GigsPage() {
                   </div>
                 ))
               ) : (
-                <Typography variant="h6" align="center">No events on the selected date.</Typography>
+                <Typography variant="h6" align="center">
+                  No events on the selected date.
+                </Typography>
               )}
             </List>
           </Grid>
