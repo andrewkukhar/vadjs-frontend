@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "https://www.vandjs.club/",
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "express": "^4.18.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.3",
@@ -31,14 +33,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
     "build": "env-cmd -f .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "dev": "env-cmd -f .env.development react-scripts start",
-    "local": "env-cmd -f .env.local react-scripts start"
+    "local": "env-cmd -f .env.local react-scripts start",
+    "heroku-postbuild": "env-cmd -f .env.development npm run build"
   },
   "eslintConfig": {
     "extends": [
