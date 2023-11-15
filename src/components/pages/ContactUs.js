@@ -142,8 +142,9 @@ export default function ContactUsPage() {
           </Button>
         </form>
         <Box mt={4}>
-          <Typography variant="h6">Other ways to contact us:</Typography>
-          <Typography paragraph>Email: andrewrisedj@gmail.com</Typography>
+          <Typography variant="h6" mb={2}>
+            Other ways to contact us:
+          </Typography>
           <Typography paragraph>Phone: (236) 995-1120</Typography>
           <Typography paragraph>
             Address: Great Vancouver Area, BC Canada

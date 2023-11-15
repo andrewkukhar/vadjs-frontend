@@ -7,8 +7,8 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { useFetchAllDjUpcomingEventsQuery } from "../../services/djs";
-import DJProfile from "../djs/DJprofile";
+import { useFetchAllDJsQuery } from "../../services/djs";
+import DJProfile from "../djs/previewDJprofile";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 function DJProfilesPreview() {
   const navigate = useNavigate();
-  const { data: DJs, isLoading } = useFetchAllDjUpcomingEventsQuery();
+  const { data: DJs, isLoading } = useFetchAllDJsQuery();
 
   const sliderSettings = {
     dots: true,
@@ -69,7 +69,7 @@ function DJProfilesPreview() {
       </Box>
     );
   }
-
+  console.log(DJs);
   return (
     <Box padding={2} className="dj-preview-section">
       <Typography variant="h5" gutterBottom>
@@ -85,6 +85,7 @@ function DJProfilesPreview() {
                 padding: "10px",
                 borderRadius: "10px",
                 margin: "10px",
+                // height: "100%",
               }}
             >
               <Card
@@ -94,11 +95,11 @@ function DJProfilesPreview() {
                   flexDirection: "column",
                   flexGrow: 1,
                   flex: 1,
-                  height: "400px",
+                  height: "100%",
                 }}
               >
                 <CardActionArea style={{ flexGrow: 1 }}>
-                  <DJProfile dj={dj} />
+                  <DJProfile dj={dj} isPreview={true} />
                 </CardActionArea>
               </Card>
             </div>

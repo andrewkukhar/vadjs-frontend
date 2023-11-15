@@ -1,12 +1,13 @@
 import React from "react";
 import { Box, Grid, Card, CardActionArea } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useFetchAllDjUpcomingEventsQuery } from "../../services/djs";
-import DJProfile from "./DJprofile";
+import { useFetchAllDJsQuery } from "../../services/djs";
+import PreviewDJprofile from "./previewDJprofile";
 import { CircularProgress } from "@mui/material";
+
 function DJProfiles() {
   const navigate = useNavigate();
-  const { data: DJs, isLoading } = useFetchAllDjUpcomingEventsQuery();
+  const { data: DJs, isLoading } = useFetchAllDJsQuery();
 
   function isDJInfoValid(dj) {
     return dj && dj?.name;
@@ -28,6 +29,7 @@ function DJProfiles() {
       </Box>
     );
   }
+  console.log(DJs);
 
   return (
     <Box padding={2}>
@@ -46,7 +48,7 @@ function DJProfiles() {
               }}
             >
               <CardActionArea>
-                <DJProfile dj={dj} />
+                <PreviewDJprofile dj={dj} isPreview={false} />
               </CardActionArea>
             </Card>
           </Grid>

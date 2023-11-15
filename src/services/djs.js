@@ -14,6 +14,10 @@ export const djsApi = createApi({
   }),
   tagTypes: ["DJ", "Events"],
   endpoints: (builder) => ({
+    fetchAllDJs: builder.query({
+      query: () => "/",
+      providesTags: ["DJ"],
+    }),
     fetchDjData: builder.query({
       query: (userId) => `/${userId}`,
       providesTags: ["DJ"],
@@ -47,6 +51,7 @@ export const djsApi = createApi({
 
 export const {
   useFetchDjDataQuery,
+  useFetchAllDJsQuery,
   useUpdateUserProfileMutation,
   useUpdateUserProfileImageMutation,
   useFetchAllDjUpcomingEventsQuery,

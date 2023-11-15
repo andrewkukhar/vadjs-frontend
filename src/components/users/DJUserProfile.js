@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Button, Box, Grid } from "@mui/material";
 import {
@@ -95,10 +95,16 @@ function UserProfile() {
     return parts[parts.length - 1] || parts[parts.length - 2];
   }
 
+  useEffect(() => {
+    if (djData) {
+      setLocalData(djData);
+    }
+  }, [djData]);
+
   if (isLoading) {
     return <CircularProgress />;
   }
-
+  console.log(localData);
   return (
     <Box
       sx={{
