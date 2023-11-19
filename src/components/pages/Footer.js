@@ -1,10 +1,5 @@
-import React from 'react';
-import { Box } from '@mui/material';
+import React from "react";
 
 export default function Footer() {
-  return (
-    <Box bgcolor="darkgrey" color="white" textAlign="center" py={2} position="sticky" bottom={0}>
-      All rights reserved @ VanDJs Club
-    </Box>
-  );
+  return <div className="footer">All rights reserved @ VanDJs Club</div>;
 }

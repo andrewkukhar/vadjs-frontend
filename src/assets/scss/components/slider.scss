@@ -1,0 +1,13 @@
+.img-container {
+  height: calc(15rem + 10vmin);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

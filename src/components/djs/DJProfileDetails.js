@@ -7,7 +7,7 @@ import {
   Link as MuiLink,
   CircularProgress,
 } from "@mui/material";
-import { formatDate } from "../../services/helpUtils";
+import { formatDate } from "../../services/utils";
 
 function DJProfileDetails({ dj, isLoading }) {
   if (isLoading) {

@@ -1,15 +1,17 @@
 .sidebar {
   top: $navbar-height;
   width: $sidebar-width;
-  height: calc(100% - #{$navbar-height});
-  overflow: auto;
+  height: calc(100%);
+  overflow: hidden;
+  background-color: #879b8c;
 
   .nav-link {
-    background-color: #ffffff;
     color: #000;
+    border-right: 1px solid #848f87;
   }
   .active {
-    background-color: #cfc7c7;
     color: #000;
+    background-color: #6b7b6f;
+    border-right: 0.25rem solid #910700;
   }
 }

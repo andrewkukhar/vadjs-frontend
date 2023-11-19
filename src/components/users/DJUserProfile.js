@@ -10,6 +10,8 @@ import { CircularProgress } from "@mui/material";
 import ProfileImageEditor from "./ProfileImageEditor";
 import UserProfileInfo from "./UserProfileInfo";
 import LinksEvents from "./LinksEvents";
+import { isValidHttpUrl } from "../../services/utils";
+import { useSnackbar } from "notistack";
 
 function UserProfile() {
   const [saving, setSaving] = useState(false);
@@ -21,10 +23,17 @@ function UserProfile() {
   const [file, setFile] = useState(null);
   const [updateUserProfile] = useUpdateUserProfileMutation();
   const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
+  const { enqueueSnackbar } = useSnackbar();
+  const [hasShownSnackbar, setHasShownSnackbar] = useState(false);
 
   const handleInputChange = (field, value) => {
     setLocalData((prev) => {
       if (field.startsWith("socialMediaLinks.")) {
+        if (!isValidHttpUrl(value)) {
+          enqueueSnackbar("The URL address is not Valid", { variant: "error" });
+          setHasShownSnackbar(true);
+          return;
+        }
         const platform = field.split(".")[1];
         return {
           ...prev,
@@ -104,7 +113,7 @@ function UserProfile() {
   if (isLoading) {
     return <CircularProgress />;
   }
-  console.log(localData);
+
   return (
     <Box
       sx={{

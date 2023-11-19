@@ -77,7 +77,7 @@ export default function ContactUsPage() {
 
   return (
     <Container maxWidth="xs">
-      <Box sx={{ width: "100%", padding: "2rem 0.5rem .5rem 0rem" }}>
+      <Box sx={{ width: "100%", padding: "2rem 0.5rem .5rem 0rem", mb: 3 }}>
         <Typography variant="h4">Contact Us</Typography>
         <Typography paragraph>
           If you have any questions or concerns, please contact us using the

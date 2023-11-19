@@ -51,7 +51,7 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs" style={{ overflow: "hidden" }}>
+    <Container maxWidth="xs">
       <Box sx={{ mt: 8, mb: 2 }}>
         <Typography variant="h4">Login</Typography>
       </Box>

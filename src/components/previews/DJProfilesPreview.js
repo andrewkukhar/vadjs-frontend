@@ -19,22 +19,20 @@ function DJProfilesPreview() {
   const { data: DJs, isLoading } = useFetchAllDJsQuery();
 
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
     centerMode: true,
-    centerPadding: "20px",
-    margin: "0 20px",
+    centerPadding: "0",
     responsive: [
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
           centerMode: true,
-          centerPadding: "10px",
-          margin: "0 20px",
+          centerPadding: "0.0rem",
         },
       },
       {
@@ -42,8 +40,7 @@ function DJProfilesPreview() {
         settings: {
           slidesToShow: 2,
           centerMode: true,
-          centerPadding: "20px",
-          margin: "0 20px",
+          centerPadding: "0.0rem",
         },
       },
     ],
@@ -69,45 +66,44 @@ function DJProfilesPreview() {
       </Box>
     );
   }
-  console.log(DJs);
+
   return (
     <Box padding={2} className="dj-preview-section">
       <Typography variant="h5" gutterBottom>
         Featured DJs
       </Typography>
-      {DJs && DJs?.length > 0 ? (
-        <Slider {...sliderSettings}>
-          {DJs?.filter((dj) => isDJInfoValid(dj))?.map((dj) => (
-            <div
-              key={dj?._id}
-              style={{
-                border: "2px solid #e0e0e0",
-                padding: "10px",
-                borderRadius: "10px",
-                margin: "10px",
-                // height: "100%",
-              }}
-            >
-              <Card
-                onClick={() => handleDJClick(dj?._id)}
+      <Box>
+        {DJs && DJs?.length > 0 ? (
+          <Slider {...sliderSettings}>
+            {DJs?.filter((dj) => isDJInfoValid(dj))?.map((dj) => (
+              <div
+                key={dj?._id}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  flexGrow: 1,
-                  flex: 1,
-                  height: "100%",
+                  border: "2px solid #e0e0e0",
+                  borderRadius: "10px",
                 }}
               >
-                <CardActionArea style={{ flexGrow: 1 }}>
-                  <DJProfile dj={dj} isPreview={true} />
-                </CardActionArea>
-              </Card>
-            </div>
-          ))}
-        </Slider>
-      ) : (
-        <Typography variant="body2">No DJs available at the moment.</Typography>
-      )}
+                <Card
+                  onClick={() => handleDJClick(dj?._id)}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                  }}
+                >
+                  <CardActionArea>
+                    <DJProfile dj={dj} isPreview={true} />
+                  </CardActionArea>
+                </Card>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <Typography variant="body2">
+            No DJs available at the moment.
+          </Typography>
+        )}
+      </Box>
       <Button
         sx={{ mt: "1.5rem" }}
         variant="text"

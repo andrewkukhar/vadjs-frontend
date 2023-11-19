@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect } from "react";
-import { useParams, Link, Route, Routes } from "react-router-dom";
+import { useParams, Link, useLocation, Route, Routes } from "react-router-dom";
 import {
   Box,
   List,
@@ -16,13 +16,20 @@ import UserProfile from "../users/DJUserProfile";
 import AppPages from "./AppPages";
 import { CircularProgress } from "@mui/material";
 import HomePage from "./Home";
+import Navbar from "../auth/Navbar";
+import Footer from "./Footer";
 
 const Signup = React.lazy(() => import("../auth/Signup"));
 const Login = React.lazy(() => import("../auth/Login"));
 
-function Home() {
+function AppLayout() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location.pathname]);
 
   const DJProfileComponent = () => {
     const { djId } = useParams();
@@ -75,7 +82,13 @@ function Home() {
   const renderList = () => (
     <List>
       {AppPages?.map(({ path: pagePath, name, Icon }) => (
-        <ListItem button key={pagePath} component={Link} to={pagePath}>
+        <ListItem
+          button
+          key={pagePath}
+          component={Link}
+          className={activeLink === pagePath ? "active" : "nav-link"}
+          to={pagePath}
+        >
           <ListItemText primary={name} />
         </ListItem>
       ))}
@@ -92,7 +105,11 @@ function Home() {
       {AppPages.map(({ path: pagePath, name, Icon }) => (
         <Grid item key={pagePath}>
           <Tooltip title={name}>
-            <IconButton component={Link} to={pagePath}>
+            <IconButton
+              component={Link}
+              to={pagePath}
+              className={activeLink === pagePath ? "active" : "nav-link"}
+            >
               <Icon fontSize="large" />
             </IconButton>
           </Tooltip>
@@ -102,28 +119,13 @@ function Home() {
   );
 
   return (
-    <Box display="flex" flexDirection="column" height="100vh" overflow="hidden">
-      <Box display="flex" flex="1" overflow="hidden">
-        <Box
-          width="calc(15% + 2vmin)"
-          bgcolor="darkgrey"
-          p={1}
-          position="sticky"
-          top={0}
-          bottom={0}
-          pt="calc(30px + 5vmin)"
-          overflow="auto"
-        >
+    <Box className="app-container">
+      <Navbar className="navbar" />
+      <Box className="app-body">
+        <Box className="sidebar">
           {matches ? renderIconGrid() : renderList()}
         </Box>
-        <Box
-          width="calc(85% - 2vmin)"
-          bgcolor="white"
-          p={2}
-          pt="calc(25px + 5vmin)"
-          pb="calc(150px + 15vmin)"
-          overflow="auto"
-        >
+        <Box className="main-content">
           <Suspense
             fallback={
               <div
@@ -154,8 +156,9 @@ function Home() {
           </Suspense>
         </Box>
       </Box>
+      <Footer />
     </Box>
   );
 }
 
-export default Home;
+export default AppLayout;

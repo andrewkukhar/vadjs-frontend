@@ -29,7 +29,6 @@ function DJProfiles() {
       </Box>
     );
   }
-  console.log(DJs);
 
   return (
     <Box padding={2}>

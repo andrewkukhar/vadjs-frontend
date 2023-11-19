@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { AuthProvider } from "./context/AuthContext";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import "./index.css";
 import App from "./App";
 import "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
