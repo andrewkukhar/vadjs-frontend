@@ -87,10 +87,7 @@ function Navbar() {
                 }}
               />
             </Stack>
-            <Link
-              to="/home"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <Typography
                 variant="h6"
                 component="div"

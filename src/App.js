@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<AppLayout />}>
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
           {AppPages?.map(({ path: pagePath, Component }) => (
