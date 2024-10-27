@@ -81,7 +81,7 @@ export default function GigsPage() {
           p: 1,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "center",
           flex: 1,
           margin: "1rem 0 0 0",

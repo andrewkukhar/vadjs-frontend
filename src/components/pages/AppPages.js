@@ -10,17 +10,17 @@ import AboutUsPage from "./AboutUs";
 import HomePage from "./Home";
 
 const AppPages = [
-  { path: "/", name: "Home", Component: HomePage, Icon: HomeIcon },
-  { path: "/alldjs", name: "All DJs", Component: DJProfiles, Icon: PeopleIcon },
-  { path: "/gigs", name: "Gigs", Component: GigsPage, Icon: EventIcon },
+  { path: "home", name: "Home", Component: HomePage, Icon: HomeIcon },
+  { path: "alldjs", name: "All DJs", Component: DJProfiles, Icon: PeopleIcon },
+  { path: "gigs", name: "Gigs", Component: GigsPage, Icon: EventIcon },
   {
-    path: "/contactus",
+    path: "contactus",
     name: "Contact Us",
     Component: ContactUsPage,
     Icon: ContactSupportIcon,
   },
   {
-    path: "/aboutus",
+    path: "aboutus",
     name: "About Us",
     Component: AboutUsPage,
     Icon: InfoIcon,

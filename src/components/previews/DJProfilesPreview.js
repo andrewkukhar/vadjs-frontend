@@ -1,50 +1,12 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  Button,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import { useFetchAllDJsQuery } from "../../services/djs";
 import DJProfile from "../djs/previewDJprofile";
-import { useNavigate } from "react-router-dom";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 function DJProfilesPreview() {
   const navigate = useNavigate();
   const { data: DJs, isLoading } = useFetchAllDJsQuery();
-
-  const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    centerPadding: "0",
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true,
-          centerPadding: "0.0rem",
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          centerMode: true,
-          centerPadding: "0.0rem",
-        },
-      },
-    ],
-  };
 
   function isDJInfoValid(dj) {
     return dj && dj?.name;
@@ -68,36 +30,39 @@ function DJProfilesPreview() {
   }
 
   return (
-    <Box padding={2} className="dj-preview-section">
+    <div className="djs-preview">
       <Typography variant="h5" gutterBottom>
         Featured DJs
       </Typography>
-      <Box>
+      <Box
+        className="djs-preview-body"
+        sx={{
+          display: "flex",
+          overflowX: "auto",
+          padding: "1rem 0",
+          gap: "1rem",
+        }}
+      >
         {DJs && DJs?.length > 0 ? (
-          <Slider {...sliderSettings}>
-            {DJs?.filter((dj) => isDJInfoValid(dj))?.map((dj) => (
-              <div
-                key={dj?._id}
-                style={{
-                  border: "2px solid #e0e0e0",
-                  borderRadius: "10px",
-                }}
-              >
-                <Card
-                  onClick={() => handleDJClick(dj?._id)}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}
-                >
-                  <CardActionArea>
-                    <DJProfile dj={dj} isPreview={true} />
-                  </CardActionArea>
-                </Card>
-              </div>
-            ))}
-          </Slider>
+          DJs?.filter((dj) => isDJInfoValid(dj)).map((dj) => (
+            <Box
+              key={dj?._id}
+              sx={{
+                minWidth: "200px",
+                flex: "0 0 auto",
+                border: "2px solid #e0e0e0",
+                borderRadius: "10px",
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+              }}
+              onClick={() => handleDJClick(dj?._id)}
+            >
+              <DJProfile dj={dj} isPreview={true} />
+            </Box>
+          ))
         ) : (
           <Typography variant="body2">
             No DJs available at the moment.
@@ -111,7 +76,7 @@ function DJProfilesPreview() {
       >
         See All DJs
       </Button>
-    </Box>
+    </div>
   );
 }
 

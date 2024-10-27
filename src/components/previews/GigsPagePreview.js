@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, List, Button } from "@mui/material";
+import { Typography, List, Button } from "@mui/material";
 import { useFetchAllDjUpcomingEventsQuery } from "../../services/djs";
 import { useNavigate } from "react-router-dom";
 
@@ -26,11 +26,11 @@ export default function GigsPagePreview() {
   const topEvents = djs?.flatMap((dj) => dj.upcomingEvents).slice(0, 3);
 
   return (
-    <Box p={3}>
+    <div className="gigs-preview">
       <Typography variant="h5" gutterBottom>
         Upcoming Gigs
       </Typography>
-      <List>
+      <List className="gigs-preview-body">
         {topEvents?.map((event) => (
           <div key={event._id}>
             <Typography variant="body1">
@@ -42,6 +42,6 @@ export default function GigsPagePreview() {
       <Button variant="text" onClick={() => navigate("/gigs")}>
         See All Gigs
       </Button>
-    </Box>
+    </div>
   );
 }

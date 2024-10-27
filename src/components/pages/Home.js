@@ -8,7 +8,10 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <Box padding={2}>
+    <div className="home">
+      <Typography variant="h3" mb={5} textAlign="center">
+        The development of the current portal is in progress...
+      </Typography>
       <Typography variant="h4" gutterBottom>
         Welcome to Vancouver DJs club!
       </Typography>
@@ -16,7 +19,7 @@ export default function HomePage() {
         Explore the best DJs in Vancouver, find upcoming gigs, learn more about
         us, and stay updated with our NewsBlog.
       </Typography>
-      <Box mt={4}>
+      <div className="home-body">
         <Typography variant="h4" gutterBottom>
           NewsBlog
         </Typography>
@@ -24,14 +27,14 @@ export default function HomePage() {
           Stay tuned for the latest updates, DJ interviews, event announcements,
           and more in our NewsBlog!
         </Typography>
-        <Button
+        {/* <Button
           variant="contained"
           color="primary"
           onClick={() => navigate("/newsblog")}
         >
           Visit NewsBlog
-        </Button>
-      </Box>
+        </Button> */}
+      </div>
       <DJProfilesPreview />
       <GigsPagePreview />
       <Box mt={4}>
@@ -50,6 +53,6 @@ export default function HomePage() {
           Learn More
         </Button>
       </Box>
-    </Box>
+    </div>
   );
 }
