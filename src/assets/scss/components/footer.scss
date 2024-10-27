@@ -1,8 +1,9 @@
 .footer {
   display: flex;
-  background-color: rgb(96, 106, 123);
+  background: linear-gradient(-45deg, #323e43, #142e37, #335360);
   justify-content: center;
   text-align: center;
   width: 100%;
-  padding: 0.35rem 1rem;
+  padding: 0.5rem 1rem;
+  color: #fff;
 }

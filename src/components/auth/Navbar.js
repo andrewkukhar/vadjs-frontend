@@ -59,7 +59,7 @@ function Navbar() {
   }, [token, enqueueSnackbar, hasShownSnackbar]);
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "#123456" }}>
+    <AppBar position="sticky" className="navbar">
       <Toolbar>
         <Box
           sx={{

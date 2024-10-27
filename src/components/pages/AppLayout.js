@@ -102,7 +102,7 @@ function AppLayout() {
       justifyContent="center"
       alignItems="center"
     >
-      {AppPages.map(({ path: pagePath, name, Icon }) => (
+      {AppPages?.map(({ path: pagePath, name, Icon }) => (
         <Grid item key={pagePath}>
           <Tooltip title={name}>
             <IconButton

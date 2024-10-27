@@ -3,15 +3,14 @@
   width: $sidebar-width;
   height: calc(100%);
   overflow: hidden;
-  background-color: #879b8c;
+  background: linear-gradient(-45deg, #2b6c6f, #346661, #377377);
+  color: #fff;
 
   .nav-link {
-    color: #000;
-    border-right: 1px solid #848f87;
+    color: #fff;
   }
   .active {
-    color: #000;
-    background-color: #6b7b6f;
-    border-right: 0.25rem solid #910700;
+    color: #fff;
+    background: linear-gradient(-45deg, #2c7d8e, #3f9f8f, #397f83);
   }
 }
